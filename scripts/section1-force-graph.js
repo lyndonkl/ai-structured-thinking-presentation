@@ -320,17 +320,7 @@ window.updateForceGraph = function(step, direction) {
             highlightSingleCluster('market-analysis');
             break;
         case 'structured-prompt':
-            highlightMultipleClustersSequential([
-                'market-analysis',
-                'estimation-techniques',
-                'health-economics',
-                'consumer-behavior',
-                'digital-media',
-                'subscription-models',
-                'demographics',
-                'business-strategy',
-                'data-analysis'
-            ]);
+            highlightSubgraphsWithInteractions();
             break;
         case 'key-insight':
             // Keep structured state active
@@ -399,12 +389,12 @@ function highlightSingleCluster(clusterId) {
         .duration(800)
         .attr('stroke-opacity', 0.05);
 
-    // Highlight cluster label
+    // Highlight cluster label (keep others visible)
     labels
         .transition()
         .duration(800)
         .attr('class', d => d.id === clusterId ? 'cluster-label active' : 'cluster-label')
-        .attr('opacity', d => d.id === clusterId ? 1 : 0.3);
+        .attr('opacity', d => d.id === clusterId ? 1 : 0.7);
 
     // Show highlight box around the cluster
     boxes
@@ -436,7 +426,7 @@ function highlightMultipleClustersSequential(clusterIds) {
         .attr('stroke-width', 1);
 
     labels
-        .attr('opacity', 0.2)
+        .attr('opacity', 0.7) // Keep labels always visible
         .attr('class', 'cluster-label');
 
     boxes
@@ -506,6 +496,143 @@ function highlightMultipleClustersSequential(clusterIds) {
                 return (bothActive && isInterCluster) ? '#3498db' : '#95a5a6';
             });
     }, totalDelay);
+}
+
+/**
+ * Highlight subgroups sequentially to show framework interactions
+ * This creates a narrative instead of lighting everything up at once
+ */
+function highlightSubgraphsWithInteractions() {
+    if (!window.graphSelections) return;
+
+    const { nodes, links, labels, boxes } = window.graphSelections;
+
+    // Reset everything to dim but keep labels visible
+    nodes
+        .attr('opacity', 0.1)
+        .attr('r', d => d.radius)
+        .attr('fill', d => d.clusterColor)
+        .attr('stroke-width', 1);
+
+    links
+        .attr('stroke-opacity', 0.05)
+        .attr('stroke-width', 1);
+
+    labels
+        .attr('opacity', 0.7) // Keep labels visible
+        .attr('class', 'cluster-label');
+
+    boxes
+        .attr('opacity', 0);
+
+    // Define meaningful subgraphs that show framework interactions
+    const subgraphs = [
+        {
+            clusters: ['estimation-techniques', 'market-analysis'],
+            color: '#9b59b6',
+            delay: 0,
+            label: 'Core Framework'
+        },
+        {
+            clusters: ['health-economics', 'demographics'],
+            color: '#e67e22',
+            delay: 1000,
+            label: 'Domain Knowledge'
+        },
+        {
+            clusters: ['consumer-behavior', 'subscription-models'],
+            color: '#3498db',
+            delay: 2000,
+            label: 'Business Logic'
+        },
+        {
+            clusters: ['data-analysis', 'digital-media'],
+            color: '#27ae60',
+            delay: 3000,
+            label: 'Measurement & Analytics'
+        },
+        {
+            clusters: ['business-strategy'],
+            color: '#e74c3c',
+            delay: 4000,
+            label: 'Strategic Integration'
+        }
+    ];
+
+    let allActiveClusters = [];
+
+    // Highlight each subgraph sequentially
+    subgraphs.forEach((subgraph, subgraphIndex) => {
+        const { clusters, color, delay } = subgraph;
+
+        // Add to active clusters list
+        allActiveClusters = [...allActiveClusters, ...clusters];
+
+        // Highlight nodes in this subgraph
+        clusters.forEach(clusterId => {
+            nodes
+                .filter(d => d.cluster === clusterId)
+                .transition()
+                .delay(delay)
+                .duration(600)
+                .attr('opacity', 1)
+                .attr('r', d => d.radius * 1.8)
+                .attr('fill', color)
+                .attr('stroke-width', 2);
+
+            // Highlight label
+            labels
+                .filter(d => d.id === clusterId)
+                .transition()
+                .delay(delay)
+                .duration(600)
+                .attr('class', 'cluster-label active')
+                .attr('opacity', 1);
+
+            // Show highlight box
+            boxes
+                .filter(d => d.id === clusterId)
+                .transition()
+                .delay(delay)
+                .duration(600)
+                .attr('opacity', 0.3)
+                .attr('stroke', color)
+                .attr('stroke-width', 3);
+        });
+
+        // After subgraph lights up, show connections within the subgraph and to previously lit clusters
+        setTimeout(() => {
+            links
+                .filter(d => {
+                    const sourceCluster = graphData.nodes.find(n => n.id === d.source.id)?.cluster;
+                    const targetCluster = graphData.nodes.find(n => n.id === d.target.id)?.cluster;
+                    const sourceActive = allActiveClusters.includes(sourceCluster);
+                    const targetActive = allActiveClusters.includes(targetCluster);
+                    return sourceActive && targetActive;
+                })
+                .transition()
+                .duration(600)
+                .attr('stroke', color)
+                .attr('stroke-opacity', 0.5)
+                .attr('stroke-width', 2);
+        }, delay + 600);
+    });
+
+    // After all subgraphs are shown, highlight key inter-cluster connections
+    setTimeout(() => {
+        links
+            .filter(d => {
+                const sourceCluster = graphData.nodes.find(n => n.id === d.source.id)?.cluster;
+                const targetCluster = graphData.nodes.find(n => n.id === d.target.id)?.cluster;
+                const bothActive = allActiveClusters.includes(sourceCluster) && allActiveClusters.includes(targetCluster);
+                const isInterCluster = sourceCluster !== targetCluster;
+                return bothActive && isInterCluster;
+            })
+            .transition()
+            .duration(800)
+            .attr('stroke-opacity', 0.4)
+            .attr('stroke-width', 2);
+    }, 5000);
 }
 
 /**
