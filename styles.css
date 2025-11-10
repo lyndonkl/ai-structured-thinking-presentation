@@ -193,7 +193,26 @@ a:hover {
 
 .example-container {
     position: relative;
-    min-height: 200vh;
+    min-height: 400vh; /* Taller to allow for more scrolling */
+    display: flex;
+    flex-direction: row;
+}
+
+.example-container .scroll-graphic {
+    flex: 0 0 50%; /* Take up 50% of width */
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f8f9fa;
+}
+
+.example-container .scroll-text {
+    flex: 0 0 50%; /* Take up 50% of width */
+    position: relative;
+    z-index: 10;
 }
 
 #section2 {

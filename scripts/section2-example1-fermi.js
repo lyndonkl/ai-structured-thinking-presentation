@@ -11,24 +11,28 @@ document.addEventListener('DOMContentLoaded', () => {
 function initExample1() {
     console.log('Example 1: Market Sizing initialized');
 
-    // Set up Scrollama for Example 1
-    const example1Scroller = scrollama();
-
-    example1Scroller
-        .setup({
-            step: '#example1 .step',
-            offset: 0.5,
-            debug: false,
-        })
-        .onStepEnter(handleExample1StepEnter);
-
-    // Handle window resize
-    window.addEventListener('resize', () => {
-        example1Scroller.resize();
-    });
-
-    // Add steps dynamically
+    // Add steps dynamically FIRST
     addExample1Steps();
+
+    // THEN set up Scrollama for Example 1 (after steps exist in DOM)
+    setTimeout(() => {
+        const example1Scroller = scrollama();
+
+        example1Scroller
+            .setup({
+                step: '#example1 .step',
+                offset: 0.5,
+                debug: false,
+            })
+            .onStepEnter(handleExample1StepEnter);
+
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            example1Scroller.resize();
+        });
+
+        console.log('Example 1 scrollama initialized with steps:', document.querySelectorAll('#example1 .step').length);
+    }, 100); // Small delay to ensure DOM is updated
 }
 
 /**

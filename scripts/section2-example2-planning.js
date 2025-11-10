@@ -10,21 +10,27 @@ document.addEventListener('DOMContentLoaded', () => {
 function initExample2() {
     console.log('Example 2: Project Planning initialized');
 
-    const example2Scroller = scrollama();
-
-    example2Scroller
-        .setup({
-            step: '#example2 .step',
-            offset: 0.5,
-            debug: false,
-        })
-        .onStepEnter(handleExample2StepEnter);
-
-    window.addEventListener('resize', () => {
-        example2Scroller.resize();
-    });
-
+    // Add steps FIRST
     addExample2Steps();
+
+    // THEN set up Scrollama (after steps exist in DOM)
+    setTimeout(() => {
+        const example2Scroller = scrollama();
+
+        example2Scroller
+            .setup({
+                step: '#example2 .step',
+                offset: 0.5,
+                debug: false,
+            })
+            .onStepEnter(handleExample2StepEnter);
+
+        window.addEventListener('resize', () => {
+            example2Scroller.resize();
+        });
+
+        console.log('Example 2 scrollama initialized with steps:', document.querySelectorAll('#example2 .step').length);
+    }, 100);
 }
 
 function addExample2Steps() {

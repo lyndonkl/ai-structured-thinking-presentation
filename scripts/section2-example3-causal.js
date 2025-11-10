@@ -10,21 +10,27 @@ document.addEventListener('DOMContentLoaded', () => {
 function initExample3() {
     console.log('Example 3: A/B Testing initialized');
 
-    const example3Scroller = scrollama();
-
-    example3Scroller
-        .setup({
-            step: '#example3 .step',
-            offset: 0.5,
-            debug: false,
-        })
-        .onStepEnter(handleExample3StepEnter);
-
-    window.addEventListener('resize', () => {
-        example3Scroller.resize();
-    });
-
+    // Add steps FIRST
     addExample3Steps();
+
+    // THEN set up Scrollama (after steps exist in DOM)
+    setTimeout(() => {
+        const example3Scroller = scrollama();
+
+        example3Scroller
+            .setup({
+                step: '#example3 .step',
+                offset: 0.5,
+                debug: false,
+            })
+            .onStepEnter(handleExample3StepEnter);
+
+        window.addEventListener('resize', () => {
+            example3Scroller.resize();
+        });
+
+        console.log('Example 3 scrollama initialized with steps:', document.querySelectorAll('#example3 .step').length);
+    }, 100);
 }
 
 function addExample3Steps() {
