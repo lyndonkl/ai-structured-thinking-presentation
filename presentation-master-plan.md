@@ -910,28 +910,28 @@ Documentation:
   - Create `scripts/` folder for JavaScript modules
   - Create `data/` folder for any data files
   - Create `assets/` folder for images/resources
-  - Reference: Project root structure
+  - Reference: [File Structure](#file-structure)
 
 - [ ] **1.2 Library Setup**
   - Add Scrollama library (CDN or npm)
   - Add D3.js v7 (CDN or npm)
   - Add GSAP for animations (CDN or npm)
   - Test basic imports
-  - Reference: Technical Implementation Notes (all sections)
+  - Reference: [Technical Resources Reference](#technical-resources-reference)
 
 - [ ] **1.3 Base HTML Structure**
   - Create scrollytelling container structure
   - Set up `<div id="scroll">` main container
   - Create step divs for each scroll point
   - Set up fixed graphic containers for visualizations
-  - Reference: Scrollama documentation pattern
+  - Reference: [Technical Resources Reference - Scrollama](#scrollama-resources)
 
 - [ ] **1.4 Basic Styling**
   - Set up scrollytelling CSS (sticky positioning)
   - Create typography styles
   - Set up color palette
   - Mobile responsive breakpoints
-  - Reference: General presentation requirements
+  - Reference: [Executive Summary](#executive-summary)
 
 ---
 
@@ -942,7 +942,7 @@ Documentation:
   - Define 9 clusters with labels
   - Assign nodes to clusters
   - Create link data (inter-cluster connections)
-  - Reference: Section 1 → Visual: D3.js Interactive Concept Graph → Design Specs
+  - Reference: [Section 1 → Visual: D3.js Interactive Concept Graph](#visual-d3js-interactive-concept-graph)
 
 - [ ] **2.2 D3 Force Simulation Setup**
   - Initialize SVG canvas
@@ -950,28 +950,28 @@ Documentation:
   - Implement collision detection
   - Add nodes and links to SVG
   - Test basic rendering
-  - Reference: Section 1 → Technical Implementation Notes → D3.js Setup
+  - Reference: [Section 1 → Technical Implementation Notes](#technical-implementation-notes)
 
 - [ ] **2.3 Cluster Highlighting Logic**
   - Create function to highlight single cluster (yellow)
   - Create function to highlight multiple clusters (blue)
   - Implement smooth transitions between states
   - Add inter-cluster line animations
-  - Reference: Section 1 → Scroll Point 1 & 2 animations
+  - Reference: [Section 1 → Scroll Point 1 & 2](#scrollytelling-sequence)
 
 - [ ] **2.4 Scrollama Integration**
   - Set up Scrollama instance for Section 1
   - Define 3 scroll triggers (simple prompt, structured prompt, hover state)
   - Connect triggers to highlight functions
   - Test scroll-triggered animations
-  - Reference: Section 1 → Technical Implementation Notes → Scrollama Triggers
+  - Reference: [Section 1 → Technical Implementation Notes](#technical-implementation-notes)
 
 - [ ] **2.5 Narrative Overlays**
   - Create overlay containers for narrative text
   - Add fade-in/fade-out animations
   - Position overlays correctly
   - Add prompt text displays
-  - Reference: Section 1 → Scrollytelling Sequence (all scroll points)
+  - Reference: [Section 1 → Scrollytelling Sequence](#scrollytelling-sequence)
 
 ---
 
@@ -982,45 +982,45 @@ Documentation:
   - Add generic AI response mock
   - Implement fade-in animation
   - Add narrative overlay
-  - Reference: Section 2 → Example 1 → Scroll Sequence 1
+  - Reference: [Section 2 → Example 1 → Scroll Sequence 1](#scroll-sequence-1-the-search-style-approach)
 
 - [ ] **3.2 Transition Animation**
   - Create particle dissolution effect (or simple fade)
   - Test GSAP animation
   - Time transition appropriately (2-3 seconds)
-  - Reference: Section 2 → Example 1 → Visual Transition 1
+  - Reference: [Section 2 → Example 1 → Visual Transition 1](#visual-transition-1)
 
 - [ ] **3.3 Clarifying Questions Display**
   - Create split-screen layout (prompt left, questions right)
   - Animate questions appearing
   - Style Q&A format
-  - Reference: Section 2 → Example 1 → Scroll Sequence 2
+  - Reference: [Section 2 → Example 1 → Scroll Sequence 2](#scroll-sequence-2-the-structured-approach-begins)
 
 - [ ] **3.4 Fermi Tree Visualization**
   - Use D3 tree layout (`d3.tree()`)
   - Create data structure for decomposition
   - Implement sequential node animation (200ms delays)
   - Add tooltips for assumptions
-  - Reference: Section 2 → Example 1 → Scroll Point 3
+  - Reference: [Section 2 → Example 1 → Scroll Point 3](#scroll-point-3-decomposition-tree-visualizes)
 
 - [ ] **3.5 Bounds & Sensitivity Visualization**
   - Create range slider visual ($4M - $19M - $60M)
   - Add sensitivity bars with color coding
   - Animate appearance
-  - Reference: Section 2 → Example 1 → Scroll Point 4
+  - Reference: [Section 2 → Example 1 → Scroll Point 4](#scroll-point-4-bounds-appear)
 
 - [ ] **3.6 Unit Economics Breakdown**
   - Create revenue/cost comparison
   - Add warning animation (red)
   - Show solution with freemium model
   - Add "Read More" link to markdown
-  - Reference: Section 2 → Example 1 → Scroll Point 5
+  - Reference: [Section 2 → Example 1 → Scroll Point 5](#scroll-point-5-the-critical-insight)
 
 - [ ] **3.7 Scrollama Setup for Example 1**
   - Define 5 scroll triggers
   - Connect to visualization functions
   - Test smooth transitions
-  - Reference: Section 2 → Example 1 (all scroll points)
+  - Reference: [Section 2 → Example 1 (all scroll points)](#example-1-market-sizing-with-fermi-estimation-8-minutes)
 
 ---
 
@@ -1030,44 +1030,44 @@ Documentation:
   - Display simple migration query
   - Show generic checklist
   - Add narrative overlay
-  - Reference: Section 2 → Example 2 → Scroll Sequence 1
+  - Reference: [Section 2 → Example 2 → Scroll Sequence 1](#scroll-sequence-1-the-search-style-approach-1)
 
 - [ ] **4.2 Transition Animation**
   - Scatter checklist items
   - Reorganize into phases
-  - Reference: Section 2 → Example 2 → Visual Transition 3
+  - Reference: [Section 2 → Example 2 → Visual Transition 3](#visual-transition-3)
 
 - [ ] **4.3 Context Cards**
   - Create info card layout
   - Display project constraints
   - Animate appearance
-  - Reference: Section 2 → Example 2 → Scroll Point 1
+  - Reference: [Section 2 → Example 2 → Scroll Point 1](#scroll-point-1-context-gathering)
 
 - [ ] **4.4 Phased Timeline Diagram**
   - Create SVG timeline with 4 phases
   - Add parallel tracks within phases
   - Animate phases appearing
-  - Reference: Section 2 → Example 2 → Scroll Point 2
+  - Reference: [Section 2 → Example 2 → Scroll Point 2](#scroll-point-2-phased-approach-diagram)
 
 - [ ] **4.5 Risk Heatmap Matrix**
   - Create 3x3 grid with D3
   - Position risks in matrix
   - Add color scale for heat
   - Implement expansion cards for top 3 risks
-  - Reference: Section 2 → Example 2 → Scroll Point 3
+  - Reference: [Section 2 → Example 2 → Scroll Point 3](#scroll-point-3-premortem-risk-heatmap)
 
 - [ ] **4.6 Metrics Dashboard**
   - Create three categories (leading, lagging, counter-metrics)
   - Style with cards showing before→after
   - Animate appearance
   - Add "Read More" link
-  - Reference: Section 2 → Example 2 → Scroll Point 4
+  - Reference: [Section 2 → Example 2 → Scroll Point 4](#scroll-point-4-success-metrics-dashboard)
 
 - [ ] **4.7 Scrollama Setup for Example 2**
   - Define 4 scroll triggers
   - Connect to visualization functions
   - Test transitions
-  - Reference: Section 2 → Example 2 (all scroll points)
+  - Reference: [Section 2 → Example 2 (all scroll points)](#example-2-project-planning-with-risk-management-8-minutes)
 
 ---
 
@@ -1077,17 +1077,17 @@ Documentation:
   - Display A/B test duration query
   - Show generic calculator response
   - Add narrative overlay
-  - Reference: Section 2 → Example 3 → Scroll Sequence 1
+  - Reference: [Section 2 → Example 3 → Scroll Sequence 1](#scroll-sequence-1-the-search-style-approach-2)
 
 - [ ] **5.2 Transition to Causal Diagram**
   - Formula dissolves into diagram
-  - Reference: Section 2 → Example 3 → Visual Transition 5
+  - Reference: [Section 2 → Example 3 → Visual Transition 5](#visual-transition-5)
 
 - [ ] **5.3 Bar Chart Comparison**
   - Create D3 bar chart
   - Show diabetes vs acne completion rates
   - Show short vs long flow rates
-  - Reference: Section 2 → Example 3 → Scroll Sequence 2
+  - Reference: [Section 2 → Example 3 → Scroll Sequence 2](#scroll-sequence-2-the-data-pattern)
 
 - [ ] **5.4 Causal DAG Visualization**
   - Use d3-dag library or dagre-d3
@@ -1096,25 +1096,25 @@ Documentation:
   - Animate arrows showing confounding paths
   - Add pulsing effect
   - Highlight "CONDITION is a CONFOUNDER" insight
-  - Reference: Section 2 → Example 3 → Scroll Point 3
+  - Reference: [Section 2 → Example 3 → Scroll Point 3](#scroll-point-3-causal-model-reveals-confounding)
 
 - [ ] **5.5 Experimental Design Matrix**
   - Create table showing randomization
   - Add checkmarks for why it works
   - Animate appearance
-  - Reference: Section 2 → Example 3 → Scroll Point 4
+  - Reference: [Section 2 → Example 3 → Scroll Point 4](#scroll-point-4-experimental-design-solution)
 
 - [ ] **5.6 Experiment Roadmap**
   - Display 3-phase experimental strategy
   - Show goals and metrics
   - Add "Read More" link
-  - Reference: Section 2 → Example 3 → Scroll Point 5
+  - Reference: [Section 2 → Example 3 → Scroll Point 5](#scroll-point-5-multiple-experiments-designed)
 
 - [ ] **5.7 Scrollama Setup for Example 3**
   - Define 5 scroll triggers
   - Connect to visualization functions
   - Test causal diagram animation specifically
-  - Reference: Section 2 → Example 3 (all scroll points)
+  - Reference: [Section 2 → Example 3 (all scroll points)](#example-3-ab-test-design-with-causal-inference-9-minutes)
 
 ---
 
@@ -1124,12 +1124,12 @@ Documentation:
   - Create three floating icons
   - Show pattern recognition summary
   - Add key insights for each example
-  - Reference: Section 2 → Section 2 Recap
+  - Reference: [Section 2 → Section 2 Recap](#section-2-recap-1-minute)
 
 - [ ] **6.2 Transition to Section 3**
   - Quick fade animation
   - Test smooth scroll continuity
-  - Reference: Section 2 → Section 2 Recap → Spoken transition
+  - Reference: [Section 2 → Section 2 Recap → Spoken transition](#section-2-recap-1-minute)
 
 ---
 
@@ -1139,34 +1139,34 @@ Documentation:
   - Create simple visual diagram
   - Show: Skills → Synthesize → Deep Research
   - Add arrows and labels
-  - Reference: Section 3 → Scroll Sequence 1
+  - Reference: [Section 3 → Scroll Sequence 1](#scroll-sequence-1-the-pattern-1-minute)
 
 - [ ] **7.2 Fermi Output Summary**
   - Display condensed Fermi results from Example 1
   - Show checkmarks for techniques used
-  - Reference: Section 3 → Scroll Sequence 2
+  - Reference: [Section 3 → Scroll Sequence 2](#scroll-sequence-2-meta-example-setup-2-minutes)
 
 - [ ] **7.3 Custom Prompt Display**
   - Show full deep research prompt
   - Add highlighting for key sections (yellow, green, blue)
   - Animate sections appearing sequentially
-  - Reference: Section 3 → Scroll Sequence 3
+  - Reference: [Section 3 → Scroll Sequence 3](#scroll-sequence-3-custom-prompt-creation-15-minutes)
 
 - [ ] **7.4 Table of Contents Preview**
   - Display mock TOC for estimation guide
   - Add interactive link to full deep research prompt
-  - Reference: Section 3 → Scroll Sequence 4
+  - Reference: [Section 3 → Scroll Sequence 4](#scroll-sequence-4-deep-research-output-preview-15-minutes)
 
 - [ ] **7.5 Closing Message**
   - Show three section headers
   - Display key takeaways
-  - Reference: Section 3 → Closing
+  - Reference: [Section 3 → Closing](#closing-30-seconds)
 
 - [ ] **7.6 Scrollama Setup for Section 3**
   - Define 4 scroll triggers
   - Connect to content displays
   - Test smooth flow
-  - Reference: Section 3 (all scroll sequences)
+  - Reference: [Section 3 (all scroll sequences)](#section-3-deep-research-workflow-6-minutes)
 
 ---
 
@@ -1178,34 +1178,34 @@ Documentation:
   - Add deep research example
   - Add documentation links
   - Ensure links are embedded throughout AND at the end
-  - Reference: Section 3 → Final Resources Slide
+  - Reference: [Section 3 → Final Resources Slide](#final-resources-slide)
 
 - [ ] **8.2 Mobile Responsiveness**
   - Test on mobile devices
   - Adjust visualizations for smaller screens
   - Simplify complex diagrams if needed
   - Test scroll behavior on mobile
-  - Reference: General requirements
+  - Reference: [Executive Summary](#executive-summary)
 
 - [ ] **8.3 Performance Optimization**
   - Optimize D3 rendering (use canvas for large node graphs if needed)
   - Lazy load visualizations
   - Test scroll performance
   - Minimize animation jank
-  - Reference: Best practices
+  - Reference: [Technical Resources Reference](#technical-resources-reference)
 
 - [ ] **8.4 Cross-browser Testing**
   - Test in Chrome, Firefox, Safari, Edge
   - Fix any browser-specific issues
   - Test on different screen sizes
-  - Reference: General requirements
+  - Reference: [Success Criteria](#success-criteria)
 
 - [ ] **8.5 Accessibility**
   - Add alt text for visualizations
   - Ensure keyboard navigation works
   - Test screen reader compatibility
   - Add ARIA labels where needed
-  - Reference: Best practices
+  - Reference: [Success Criteria](#success-criteria)
 
 - [ ] **8.6 Final Polish**
   - Review all transitions
@@ -1213,7 +1213,7 @@ Documentation:
   - Verify all links work
   - Test full presentation flow
   - Proofread all text
-  - Reference: All sections
+  - Reference: [All sections - Executive Summary](#executive-summary)
 
 ---
 
@@ -1224,13 +1224,13 @@ Documentation:
   - Add README with presentation description
   - Add all markdown conversation files
   - Add deep research example
-  - Reference: Deployment requirements
+  - Reference: [File Structure](#file-structure)
 
 - [ ] **9.2 GitHub Pages Configuration**
   - Enable GitHub Pages
   - Set source to main branch
   - Test live URL
-  - Reference: GitHub Pages docs
+  - Reference: [Next Steps](#next-steps)
 
 - [ ] **9.3 Documentation**
   - Add README with:
@@ -1238,14 +1238,14 @@ Documentation:
     - Links to live presentation
     - Links to conversation transcripts
     - Technical stack used
-  - Reference: Project documentation standards
+  - Reference: [Executive Summary](#executive-summary) and [File Structure](#file-structure)
 
 - [ ] **9.4 Final Testing**
   - Test live GitHub Pages URL
   - Verify all links work
   - Test on different devices
   - Share with test audience
-  - Reference: Final validation
+  - Reference: [Success Criteria](#success-criteria)
 
 ---
 
