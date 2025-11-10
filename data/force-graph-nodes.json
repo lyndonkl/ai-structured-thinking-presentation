@@ -1,0 +1,125 @@
+{
+  "clusters": [
+    {
+      "id": "market-analysis",
+      "label": "Market Analysis",
+      "x": -300,
+      "y": -300,
+      "color": "#e74c3c"
+    },
+    {
+      "id": "estimation-techniques",
+      "label": "Estimation Techniques",
+      "x": 0,
+      "y": -300,
+      "color": "#3498db"
+    },
+    {
+      "id": "health-economics",
+      "label": "Health Economics",
+      "x": 300,
+      "y": -300,
+      "color": "#9b59b6"
+    },
+    {
+      "id": "consumer-behavior",
+      "label": "Consumer Behavior",
+      "x": -300,
+      "y": 0,
+      "color": "#f39c12"
+    },
+    {
+      "id": "digital-media",
+      "label": "Digital Media",
+      "x": 0,
+      "y": 0,
+      "color": "#1abc9c"
+    },
+    {
+      "id": "subscription-models",
+      "label": "Subscription Models",
+      "x": 300,
+      "y": 0,
+      "color": "#e67e22"
+    },
+    {
+      "id": "demographics",
+      "label": "Demographics",
+      "x": -300,
+      "y": 300,
+      "color": "#34495e"
+    },
+    {
+      "id": "business-strategy",
+      "label": "Business Strategy",
+      "x": 0,
+      "y": 300,
+      "color": "#16a085"
+    },
+    {
+      "id": "data-analysis",
+      "label": "Data Analysis",
+      "x": 300,
+      "y": 300,
+      "color": "#27ae60"
+    }
+  ],
+  "nodeCount": {
+    "market-analysis": 110,
+    "estimation-techniques": 120,
+    "health-economics": 100,
+    "consumer-behavior": 115,
+    "digital-media": 105,
+    "subscription-models": 100,
+    "demographics": 120,
+    "business-strategy": 110,
+    "data-analysis": 120
+  },
+  "concepts": {
+    "market-analysis": [
+      "TAM SAM SOM", "Market sizing", "Competitive analysis", "Market trends", "Customer segments",
+      "Market penetration", "Growth rate", "Market share", "Industry analysis", "Porter's Five Forces",
+      "SWOT analysis", "Value proposition", "Go-to-market strategy", "Market research", "Addressable market"
+    ],
+    "estimation-techniques": [
+      "Fermi estimation", "Decomposition", "Top-down estimation", "Bottom-up estimation", "Analogous estimation",
+      "Parametric estimation", "Three-point estimation", "Monte Carlo simulation", "Triangulation", "Bounding assumptions",
+      "Sensitivity analysis", "Scenario planning", "Uncertainty quantification", "Expert judgment", "Delphi method"
+    ],
+    "health-economics": [
+      "Healthcare costs", "Health insurance", "Chronic disease management", "Preventive care", "Health outcomes",
+      "Cost-effectiveness", "QALY", "Healthcare utilization", "Patient adherence", "Health behaviors",
+      "Disease burden", "Healthcare access", "Medical spending", "Health interventions", "Population health"
+    ],
+    "consumer-behavior": [
+      "Purchase intent", "Willingness to pay", "Consumer psychology", "Decision making", "Brand loyalty",
+      "Customer journey", "Pain points", "User needs", "Adoption curve", "Behavioral economics",
+      "Habits and routines", "Trust factors", "Social proof", "Loss aversion", "Anchoring bias"
+    ],
+    "digital-media": [
+      "Content consumption", "Digital engagement", "Social media", "Online behavior", "Mobile apps",
+      "Web traffic", "User retention", "Content marketing", "SEO", "Virality",
+      "Engagement metrics", "Click-through rate", "Time on site", "Content strategy", "Digital channels"
+    ],
+    "subscription-models": [
+      "Recurring revenue", "Subscription pricing", "Freemium model", "Churn rate", "LTV:CAC ratio",
+      "Monthly recurring revenue", "Annual contracts", "Pricing tiers", "Customer lifetime value", "Acquisition cost",
+      "Retention rate", "Expansion revenue", "Payment models", "Billing cycles", "Price optimization"
+    ],
+    "demographics": [
+      "Age distribution", "Population size", "Income levels", "Education levels", "Geographic distribution",
+      "Urban vs rural", "Household composition", "Employment status", "Generational cohorts", "Socioeconomic factors",
+      "Census data", "Population growth", "Migration patterns", "Diversity metrics", "Target demographics"
+    ],
+    "business-strategy": [
+      "Revenue model", "Business model canvas", "Unit economics", "Profit margins", "Cost structure",
+      "Value chain", "Strategic positioning", "Competitive advantage", "Differentiation", "Pricing strategy",
+      "Scale economics", "Network effects", "Platform strategy", "Business viability", "Investment thesis"
+    ],
+    "data-analysis": [
+      "Statistical analysis", "Data modeling", "Correlation", "Regression", "Forecasting",
+      "Trend analysis", "Cohort analysis", "A/B testing", "Data visualization", "Metrics",
+      "KPIs", "Benchmarking", "Predictive analytics", "Data-driven decisions", "Quantitative methods"
+    ]
+  }
+}

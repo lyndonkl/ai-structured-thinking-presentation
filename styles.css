@@ -1,0 +1,587 @@
+/* ===================================
+   Base Styles & Typography
+   =================================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    /* Color Palette */
+    --bg-dark: #1a1a2e;
+    --bg-light: #f8f9fa;
+    --text-dark: #2c3e50;
+    --text-light: #ffffff;
+    --accent-blue: #3498db;
+    --accent-yellow: #f39c12;
+    --accent-green: #27ae60;
+    --accent-red: #e74c3c;
+    --overlay-bg: rgba(255, 255, 255, 0.95);
+    --border-gray: #dfe6e9;
+
+    /* Typography */
+    --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    --font-mono: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+
+    /* Spacing */
+    --spacing-xs: 0.5rem;
+    --spacing-sm: 1rem;
+    --spacing-md: 2rem;
+    --spacing-lg: 4rem;
+    --spacing-xl: 6rem;
+}
+
+body {
+    font-family: var(--font-sans);
+    font-size: 18px;
+    line-height: 1.6;
+    color: var(--text-dark);
+    background-color: var(--bg-light);
+    overflow-x: hidden;
+}
+
+h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: var(--spacing-md);
+}
+
+h2 {
+    font-size: 2rem;
+    font-weight: 600;
+    margin-bottom: var(--spacing-sm);
+}
+
+h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: var(--spacing-sm);
+}
+
+h4 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: var(--spacing-xs);
+}
+
+p {
+    margin-bottom: var(--spacing-sm);
+}
+
+a {
+    color: var(--accent-blue);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    color: #2980b9;
+    text-decoration: underline;
+}
+
+/* ===================================
+   Scrollytelling Base Structure
+   =================================== */
+
+#scroll {
+    position: relative;
+}
+
+.scroll-section {
+    position: relative;
+    min-height: 100vh;
+}
+
+/* Fixed graphic container */
+.scroll-graphic {
+    position: sticky;
+    top: 0;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+}
+
+/* Scrolling text container */
+.scroll-text {
+    position: relative;
+    z-index: 10;
+    pointer-events: none;
+}
+
+.step {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-lg) var(--spacing-md);
+    pointer-events: all;
+}
+
+/* ===================================
+   Section 1: Force-Directed Graph
+   =================================== */
+
+#section1 {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+#force-graph {
+    width: 100%;
+    height: 100%;
+}
+
+.narrative-overlay {
+    background: var(--overlay-bg);
+    padding: var(--spacing-lg);
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    max-width: 700px;
+}
+
+.intro-text {
+    font-size: 1.25rem;
+    line-height: 1.8;
+}
+
+.prompt-box {
+    background: #f7f7f7;
+    border-left: 4px solid var(--accent-blue);
+    padding: var(--spacing-md);
+    border-radius: 8px;
+    margin-bottom: var(--spacing-md);
+    font-family: var(--font-mono);
+    font-size: 0.95rem;
+}
+
+.prompt-box.simple {
+    border-left-color: var(--accent-yellow);
+}
+
+.prompt-box.structured {
+    border-left-color: var(--accent-blue);
+}
+
+.prompt-box h3 {
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: var(--spacing-xs);
+    color: #666;
+}
+
+.explanation {
+    font-size: 1rem;
+    color: #555;
+}
+
+.highlight {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--accent-blue);
+}
+
+/* ===================================
+   Section 2: Examples
+   =================================== */
+
+.example-container {
+    position: relative;
+    min-height: 200vh;
+}
+
+#section2 {
+    background: var(--bg-light);
+}
+
+.generic-response {
+    background: #fff;
+    border: 1px solid var(--border-gray);
+    padding: var(--spacing-md);
+    border-radius: 8px;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: #666;
+}
+
+.before-after-container {
+    display: flex;
+    gap: var(--spacing-md);
+}
+
+.before-after-container > div {
+    flex: 1;
+}
+
+/* Example visualizations */
+#example1-viz,
+#example2-viz,
+#example3-viz {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Section 2 Recap */
+.recap-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-lg);
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+.recap-content {
+    max-width: 900px;
+    text-align: center;
+    color: var(--text-light);
+}
+
+.pattern-summary {
+    margin: var(--spacing-lg) 0;
+    font-size: 1.25rem;
+}
+
+.key-insights {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: var(--spacing-md);
+    margin-top: var(--spacing-lg);
+}
+
+.insight-card {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    padding: var(--spacing-md);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.insight-card h3 {
+    font-size: 1.5rem;
+    margin-bottom: var(--spacing-xs);
+}
+
+/* ===================================
+   Section 3: Deep Research
+   =================================== */
+
+#section3 {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.workflow-diagram {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-sm);
+    margin: var(--spacing-lg) 0;
+    flex-wrap: wrap;
+}
+
+.workflow-step {
+    background: var(--accent-blue);
+    color: var(--text-light);
+    padding: var(--spacing-md);
+    border-radius: 12px;
+    text-align: center;
+    min-width: 200px;
+}
+
+.workflow-step h4 {
+    font-size: 1.25rem;
+    margin-bottom: var(--spacing-xs);
+}
+
+.workflow-arrow {
+    font-size: 2rem;
+    color: var(--accent-yellow);
+    font-weight: bold;
+}
+
+.techniques-used {
+    background: #f7f7f7;
+    padding: var(--spacing-md);
+    border-radius: 8px;
+    margin: var(--spacing-md) 0;
+}
+
+.techniques-used p {
+    margin-bottom: var(--spacing-xs);
+    font-family: var(--font-mono);
+    font-size: 0.95rem;
+}
+
+.meta-question {
+    font-size: 1.1rem;
+    font-style: italic;
+    color: #555;
+    margin-top: var(--spacing-md);
+}
+
+.prompt-box.deep-research {
+    border-left-color: var(--accent-green);
+}
+
+.toc-preview {
+    background: #f7f7f7;
+    padding: var(--spacing-md);
+    border-radius: 8px;
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    line-height: 1.8;
+}
+
+.deep-insight {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--accent-green);
+    margin-top: var(--spacing-md);
+}
+
+.takeaways {
+    display: grid;
+    gap: var(--spacing-md);
+    margin: var(--spacing-lg) 0;
+}
+
+.takeaway {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    padding: var(--spacing-md);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.takeaway h4 {
+    font-size: 1.25rem;
+    color: var(--text-light);
+}
+
+.takeaway p {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.closing-message {
+    font-size: 1.25rem;
+    line-height: 1.8;
+    margin-top: var(--spacing-lg);
+}
+
+/* ===================================
+   Resources Section
+   =================================== */
+
+.resources-section {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-lg);
+    background: var(--bg-dark);
+    color: var(--text-light);
+}
+
+.resources-content {
+    max-width: 800px;
+}
+
+.resources-content h2 {
+    font-size: 3rem;
+    margin-bottom: var(--spacing-lg);
+    text-align: center;
+}
+
+.resource-category {
+    margin-bottom: var(--spacing-lg);
+}
+
+.resource-category h3 {
+    font-size: 1.5rem;
+    margin-bottom: var(--spacing-sm);
+    color: var(--accent-blue);
+}
+
+.resource-category ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.resource-category li {
+    margin-bottom: var(--spacing-xs);
+}
+
+.resource-category a {
+    color: var(--text-light);
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+    display: inline-block;
+    padding: var(--spacing-xs) 0;
+}
+
+.resource-category a:hover {
+    color: var(--accent-blue);
+    transform: translateX(10px);
+}
+
+/* ===================================
+   D3 Visualization Styles
+   =================================== */
+
+.node {
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.node circle {
+    stroke: #fff;
+    stroke-width: 2px;
+}
+
+.link {
+    stroke: #999;
+    stroke-opacity: 0.3;
+    stroke-width: 1px;
+}
+
+.cluster-label {
+    font-size: 16px;
+    font-weight: 600;
+    fill: #333;
+    text-anchor: middle;
+    pointer-events: none;
+}
+
+.node.active circle {
+    stroke-width: 3px;
+}
+
+.link.active {
+    stroke-opacity: 0.8;
+    stroke-width: 2px;
+}
+
+/* ===================================
+   Mobile Responsiveness
+   =================================== */
+
+@media (max-width: 768px) {
+    h1 {
+        font-size: 2rem;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+    }
+
+    h3 {
+        font-size: 1.25rem;
+    }
+
+    .narrative-overlay {
+        padding: var(--spacing-md);
+        max-width: 90%;
+    }
+
+    .step {
+        padding: var(--spacing-md);
+    }
+
+    .workflow-diagram {
+        flex-direction: column;
+    }
+
+    .workflow-arrow {
+        transform: rotate(90deg);
+    }
+
+    .key-insights {
+        grid-template-columns: 1fr;
+    }
+
+    .before-after-container {
+        flex-direction: column;
+    }
+}
+
+/* ===================================
+   Animation Classes
+   =================================== */
+
+.fade-in {
+    animation: fadeIn 0.6s ease-in;
+}
+
+.fade-out {
+    animation: fadeOut 0.6s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+}
+
+.pulse {
+    animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
+/* ===================================
+   Utility Classes
+   =================================== */
+
+.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.visible {
+    opacity: 1;
+    pointer-events: all;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.mt-lg {
+    margin-top: var(--spacing-lg);
+}
+
+.mb-lg {
+    margin-bottom: var(--spacing-lg);
+}

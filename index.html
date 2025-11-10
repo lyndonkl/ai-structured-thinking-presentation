@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beyond Search: Using AI as Your Structured Thinking Partner</title>
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- D3.js v7 -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+
+    <!-- Scrollama -->
+    <script src="https://unpkg.com/scrollama"></script>
+
+    <!-- GSAP for animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+
+    <!-- d3-dag for DAG visualizations -->
+    <script src="https://cdn.jsdelivr.net/npm/d3-dag@1.1.0/dist/d3-dag.min.js"></script>
+</head>
+<body>
+    <!-- Main scrollytelling container -->
+    <main id="scroll">
+        <!-- Section 1: What is a Prompt? -->
+        <section id="section1" class="scroll-section">
+            <div class="scroll-graphic" id="graph-container">
+                <svg id="force-graph"></svg>
+            </div>
+
+            <div class="scroll-text">
+                <div class="step" data-step="intro">
+                    <div class="narrative-overlay">
+                        <h1>Beyond Search: Using AI as Your Structured Thinking Partner</h1>
+                        <p class="intro-text">
+                            When you ask ChatGPT "What's the serviceable addressable market for a personalized health newsletter subscription?",
+                            you get a number from a market research report. When you use a structured prompt with Fermi estimation,
+                            you get a transparent model with assumptions you can interrogate and adjust for your specific context.
+                            The difference isn't the AI—it's the prompt structure.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="step" data-step="simple-prompt">
+                    <div class="narrative-overlay">
+                        <div class="prompt-box simple">
+                            <h3>Simple query:</h3>
+                            <p>"What's the serviceable addressable market for a personalized health newsletter subscription service in the US?"</p>
+                        </div>
+                        <p class="explanation">
+                            A simple question activates one domain of knowledge. You'll get a generic market size citation—maybe a report that says
+                            "the digital health content market is $X billion."
+                        </p>
+                    </div>
+                </div>
+
+                <div class="step" data-step="structured-prompt">
+                    <div class="narrative-overlay">
+                        <div class="prompt-box structured">
+                            <h3>Structured query:</h3>
+                            <p>"Use Fermi estimation to calculate the SAM for a personalized health newsletter subscription in the US.
+                            Break down: (1) US adult population, (2) % actively managing chronic conditions or preventive health,
+                            (3) % who consume digital health content regularly, (4) % willing to pay for premium health information,
+                            (5) realistic price point ($10-30/month). Provide optimistic and pessimistic bounds for each assumption,
+                            triangulate with bottom-up approach, and identify key drivers of market size."</p>
+                        </div>
+                        <p class="explanation">
+                            A structured prompt activates multiple frameworks simultaneously. Now you're getting Fermi estimation techniques,
+                            combined with health economics data, integrated with consumer behavior patterns, subscription pricing models,
+                            and demographic analysis. The AI isn't just searching—it's building a systematic model you can interrogate.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="step" data-step="key-insight">
+                    <div class="narrative-overlay">
+                        <h3>Key Insight</h3>
+                        <p>
+                            LLMs are trained across billions of examples—market analysis, estimation frameworks, health economics, consumer psychology.
+                            Simple prompts pull from one area. Structured prompts activate multiple thinking frameworks and chain them together.
+                        </p>
+                        <p>
+                            The same AI that gives you a market report citation can decompose your market systematically, show you which assumptions
+                            matter most, and give you ranges you can adjust based on your specific strategy—if you structure the prompt correctly.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="step" data-step="transition">
+                    <div class="narrative-overlay">
+                        <p>
+                            That's a 30-second comparison. Now let me show you what happens when you apply this structured thinking to real business problems
+                            that take hours of analysis.
+                        </p>
+                        <p class="highlight">
+                            Starting with: What if we actually built that health product? Is the market big enough, and would the economics work?
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2: Structured Thinking Partner -->
+        <section id="section2" class="scroll-section">
+            <!-- Example 1: Market Sizing -->
+            <div class="example-container" id="example1">
+                <div class="scroll-graphic" id="example1-container">
+                    <div id="example1-viz"></div>
+                </div>
+
+                <div class="scroll-text">
+                    <!-- Example 1 steps will be added via JavaScript -->
+                </div>
+            </div>
+
+            <!-- Example 2: Project Planning -->
+            <div class="example-container" id="example2">
+                <div class="scroll-graphic" id="example2-container">
+                    <div id="example2-viz"></div>
+                </div>
+
+                <div class="scroll-text">
+                    <!-- Example 2 steps will be added via JavaScript -->
+                </div>
+            </div>
+
+            <!-- Example 3: A/B Testing -->
+            <div class="example-container" id="example3">
+                <div class="scroll-graphic" id="example3-container">
+                    <div id="example3-viz"></div>
+                </div>
+
+                <div class="scroll-text">
+                    <!-- Example 3 steps will be added via JavaScript -->
+                </div>
+            </div>
+
+            <!-- Section 2 Recap -->
+            <div class="recap-container">
+                <div class="recap-content">
+                    <h2>Pattern Recognition</h2>
+                    <div class="pattern-summary">
+                        <p><strong>Simple prompts → Surface answers</strong></p>
+                        <p><strong>Structured prompts → Framework-driven analysis</strong></p>
+                    </div>
+                    <div class="key-insights">
+                        <div class="insight-card">
+                            <h3>Market Sizing</h3>
+                            <p>Caught fatal unit economics flaw</p>
+                        </div>
+                        <div class="insight-card">
+                            <h3>Planning</h3>
+                            <p>Identified risks before they happened</p>
+                        </div>
+                        <div class="insight-card">
+                            <h3>Experimentation</h3>
+                            <p>Revealed spurious correlations</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3: Deep Research Workflow -->
+        <section id="section3" class="scroll-section">
+            <div class="scroll-graphic" id="section3-container">
+                <div id="section3-viz"></div>
+            </div>
+
+            <div class="scroll-text">
+                <div class="step" data-step="workflow-intro">
+                    <div class="narrative-overlay">
+                        <h2>Deep Research Workflow</h2>
+                        <div class="workflow-diagram">
+                            <div class="workflow-step">
+                                <h4>1. Use Skills</h4>
+                                <p>Structured Thinking</p>
+                            </div>
+                            <div class="workflow-arrow">→</div>
+                            <div class="workflow-step">
+                                <h4>2. Synthesize</h4>
+                                <p>Create Custom Prompt</p>
+                            </div>
+                            <div class="workflow-arrow">→</div>
+                            <div class="workflow-step">
+                                <h4>3. Deep Research</h4>
+                                <p>Generate Output</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step" data-step="meta-example">
+                    <div class="narrative-overlay">
+                        <h3>From Example 1: Fermi Estimation</h3>
+                        <div class="techniques-used">
+                            <p>✓ Decomposition (260M → 182M → 82M → 29M → 6.4M)</p>
+                            <p>✓ Assumption bounding (pessimistic: $4M, optimistic: $60M)</p>
+                            <p>✓ Triangulation (top-down vs bottom-up)</p>
+                            <p>✓ Sensitivity analysis (which assumptions matter most)</p>
+                        </div>
+                        <p class="meta-question">
+                            We just used Fermi estimation to break down a market sizing problem. That's one framework.
+                            What other estimation techniques exist? When should you use each one? How do they compare?
+                        </p>
+                    </div>
+                </div>
+
+                <div class="step" data-step="custom-prompt">
+                    <div class="narrative-overlay">
+                        <h3>Custom Prompt Creation</h3>
+                        <div class="prompt-box deep-research">
+                            <p>Based on the Fermi estimation approach we just used, research and create a comprehensive guide on estimation techniques for business decisions.</p>
+                            <p>Include: 1) Taxonomy of methods, 2) When to use each, 3) Comparison table, 4) Real examples, 5) Common pitfalls, 6) Integration strategies</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step" data-step="output-preview">
+                    <div class="narrative-overlay">
+                        <h3>Deep Research Output Preview</h3>
+                        <div class="toc-preview">
+                            <p><strong>Generated: "Strategic Estimation Techniques Guide"</strong></p>
+                            <p>Executive Summary + Taxonomy + Decision Framework + Comparative Analysis + Real Examples + Pitfalls + Integration</p>
+                        </div>
+                        <p class="deep-insight">
+                            This isn't generic content—it's research grounded in YOUR specific context, tailored to YOUR audience,
+                            and structured for YOUR use case.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="step" data-step="closing">
+                    <div class="narrative-overlay">
+                        <h2>Key Takeaways</h2>
+                        <div class="takeaways">
+                            <div class="takeaway">
+                                <h4>Section 1: What is a Prompt?</h4>
+                                <p>Structure activates frameworks</p>
+                            </div>
+                            <div class="takeaway">
+                                <h4>Section 2: Structured Thinking Partner</h4>
+                                <p>Skills bring domain expertise</p>
+                            </div>
+                            <div class="takeaway">
+                                <h4>Section 3: Deep Research</h4>
+                                <p>Scale thinking into comprehensive output</p>
+                            </div>
+                        </div>
+                        <p class="closing-message">
+                            Stop using AI like Google search. Start using it as your structured thinking partner.
+                            The same AI that gives you generic answers can be a world-class strategy consultant, rigorous engineer,
+                            and careful scientist—if you prompt it with structure.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Final Resources -->
+        <section id="resources" class="resources-section">
+            <div class="resources-content">
+                <h2>Questions?</h2>
+
+                <div class="resource-category">
+                    <h3>Conversation Transcripts:</h3>
+                    <ul>
+                        <li><a href="example1-market-sizing-fermi.md">Market Sizing with Fermi Estimation</a></li>
+                        <li><a href="example2-project-planning-risk.md">Project Planning with Risk Management</a></li>
+                        <li><a href="example3-ab-test-causal-inference.md">A/B Test Design with Causal Inference</a></li>
+                    </ul>
+                </div>
+
+                <div class="resource-category">
+                    <h3>Deep Research:</h3>
+                    <ul>
+                        <li><a href="deep-research-example.md">Strategic Estimation Techniques Guide</a></li>
+                    </ul>
+                </div>
+
+                <div class="resource-category">
+                    <h3>Documentation:</h3>
+                    <ul>
+                        <li><a href="https://docs.claude.com/en/docs/claude-code">Claude Code skills documentation</a></li>
+                        <li><a href="https://github.com/lyndonkl/ai-structured-thinking-presentation">Presentation source code (GitHub)</a></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- JavaScript modules -->
+    <script src="scripts/main.js"></script>
+    <script src="scripts/section1-force-graph.js"></script>
+    <script src="scripts/section2-example1-fermi.js"></script>
+    <script src="scripts/section2-example2-planning.js"></script>
+    <script src="scripts/section2-example3-causal.js"></script>
+    <script src="scripts/section3-deep-research.js"></script>
+</body>
+</html>
