@@ -128,7 +128,7 @@ a:hover {
    =================================== */
 
 #section1 {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
 }
 
 #force-graph {
@@ -454,11 +454,26 @@ a:hover {
 }
 
 .cluster-label {
-    font-size: 16px;
-    font-weight: 600;
-    fill: #333;
+    font-size: 18px;
+    font-weight: 700;
+    fill: #2c3e50;
     text-anchor: middle;
     pointer-events: none;
+    text-shadow: 0 0 4px rgba(255, 255, 255, 0.8), 0 0 8px rgba(255, 255, 255, 0.6);
+}
+
+.cluster-label.active {
+    font-size: 22px;
+    fill: #2c3e50;
+    text-shadow: 0 0 8px rgba(255, 255, 255, 1), 0 0 12px rgba(255, 255, 255, 0.8);
+}
+
+.cluster-highlight-box {
+    fill: none;
+    stroke: #3498db;
+    stroke-width: 3;
+    stroke-dasharray: 5, 5;
+    opacity: 0;
 }
 
 .node.active circle {

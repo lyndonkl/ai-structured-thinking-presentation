@@ -9,7 +9,9 @@ let svg;
 let nodeGroup;
 let linkGroup;
 let labelGroup;
+let highlightBoxGroup;
 let currentStep = 'intro';
+let activeAnimations = []; // Track active animations to cancel them
 
 // Initialize the force-directed graph
 async function initForceGraph() {
@@ -58,7 +60,7 @@ function generateNodes(clusterData) {
                 concept: clusterConcepts[i % clusterConcepts.length] || `Concept ${i}`,
                 x: cluster.x + radius * Math.cos(angle),
                 y: cluster.y + radius * Math.sin(angle),
-                radius: 3 + Math.random() * 2,
+                radius: 4 + Math.random() * 2, // Larger base size for visibility
             });
         }
     });
@@ -128,27 +130,19 @@ function setupSVG() {
         .attr('width', width)
         .attr('height', height);
 
-    // Create groups for layering
-    linkGroup = svg.append('g').attr('class', 'links');
-    nodeGroup = svg.append('g').attr('class', 'nodes');
-    labelGroup = svg.append('g').attr('class', 'labels');
+    // Create groups for layering (order matters - drawn bottom to top)
+    const mainGroup = svg.append('g').attr('transform', `translate(${width / 2}, ${height / 2})`);
 
-    // Center the view
-    const g = svg.append('g').attr('transform', `translate(${width / 2}, ${height / 2})`);
-
-    // Move groups into centered container
-    linkGroup.attr('transform', `translate(${width / 2}, ${height / 2})`);
-    nodeGroup.attr('transform', `translate(${width / 2}, ${height / 2})`);
-    labelGroup.attr('transform', `translate(${width / 2}, ${height / 2})`);
+    highlightBoxGroup = mainGroup.append('g').attr('class', 'highlight-boxes');
+    linkGroup = mainGroup.append('g').attr('class', 'links');
+    nodeGroup = mainGroup.append('g').attr('class', 'nodes');
+    labelGroup = mainGroup.append('g').attr('class', 'labels');
 }
 
 /**
  * Create D3 force simulation with cluster gravity
  */
 function createForceSimulation(clusterData) {
-    const width = window.innerWidth;
-    const height = window.innerHeight;
-
     simulation = d3.forceSimulation(graphData.nodes)
         .force('link', d3.forceLink(graphData.links)
             .id(d => d.id)
@@ -189,8 +183,8 @@ function render() {
         .data(graphData.links)
         .join('line')
         .attr('class', d => `link ${d.type}`)
-        .attr('stroke', '#999')
-        .attr('stroke-opacity', 0.1)
+        .attr('stroke', '#95a5a6')
+        .attr('stroke-opacity', 0.15)
         .attr('stroke-width', 1);
 
     // Render nodes
@@ -200,26 +194,50 @@ function render() {
         .attr('class', 'node')
         .attr('r', d => d.radius)
         .attr('fill', d => d.clusterColor)
-        .attr('opacity', 0.6)
+        .attr('stroke', '#fff')
+        .attr('stroke-width', 1)
+        .attr('opacity', 0.5)
         .on('mouseover', handleNodeHover)
         .on('mouseout', handleNodeOut);
 
+    // Get unique clusters and their positions
+    const clusterCenters = new Map();
+    graphData.nodes.forEach(node => {
+        if (!clusterCenters.has(node.cluster)) {
+            clusterCenters.set(node.cluster, {
+                id: node.cluster,
+                label: node.clusterLabel,
+                x: node.clusterX,
+                y: node.clusterY,
+                color: node.clusterColor
+            });
+        }
+    });
+
+    // Render highlight boxes (invisible initially)
+    const boxes = highlightBoxGroup.selectAll('rect')
+        .data([...clusterCenters.values()])
+        .join('rect')
+        .attr('class', 'cluster-highlight-box')
+        .attr('id', d => `box-${d.id}`)
+        .attr('x', d => d.x - 140)
+        .attr('y', d => d.y - 140)
+        .attr('width', 280)
+        .attr('height', 280)
+        .attr('rx', 20);
+
     // Render cluster labels
-    const clusterCenters = d3.group(graphData.nodes, d => d.cluster);
     const labels = labelGroup.selectAll('text')
-        .data([...clusterCenters.keys()])
+        .data([...clusterCenters.values()])
         .join('text')
         .attr('class', 'cluster-label')
-        .attr('x', d => graphData.nodes.find(n => n.cluster === d).clusterX)
-        .attr('y', d => graphData.nodes.find(n => n.cluster === d).clusterY - 120)
-        .attr('text-anchor', 'middle')
-        .attr('font-size', '16px')
-        .attr('font-weight', 'bold')
-        .attr('fill', '#333')
-        .text(d => graphData.nodes.find(n => n.cluster === d).clusterLabel);
+        .attr('id', d => `label-${d.id}`)
+        .attr('x', d => d.x)
+        .attr('y', d => d.y - 130)
+        .text(d => d.label);
 
     // Store selections for updates
-    window.graphSelections = { nodes, links, labels };
+    window.graphSelections = { nodes, links, labels, boxes };
 }
 
 /**
@@ -245,12 +263,12 @@ function updatePositions() {
  * Handle node hover
  */
 function handleNodeHover(event, d) {
-    // Show tooltip with concept name
     d3.select(event.target)
         .transition()
         .duration(200)
-        .attr('r', d.radius * 2)
-        .attr('opacity', 1);
+        .attr('r', d.radius * 1.5)
+        .attr('opacity', 1)
+        .attr('stroke-width', 2);
 }
 
 /**
@@ -261,7 +279,27 @@ function handleNodeOut(event, d) {
         .transition()
         .duration(200)
         .attr('r', d.radius)
-        .attr('opacity', 0.6);
+        .attr('opacity', 0.5)
+        .attr('stroke-width', 1);
+}
+
+/**
+ * Cancel all active animations
+ */
+function cancelAllAnimations() {
+    activeAnimations.forEach(anim => {
+        if (anim && anim.kill) anim.kill();
+    });
+    activeAnimations = [];
+
+    // Stop all D3 transitions
+    if (window.graphSelections) {
+        const { nodes, links, labels, boxes } = window.graphSelections;
+        nodes.interrupt();
+        links.interrupt();
+        labels.interrupt();
+        boxes.interrupt();
+    }
 }
 
 /**
@@ -269,7 +307,10 @@ function handleNodeOut(event, d) {
  * Called from main.js
  */
 window.updateForceGraph = function(step, direction) {
+    if (currentStep === step) return; // Don't re-trigger same step
+
     currentStep = step;
+    cancelAllAnimations(); // Stop any ongoing animations
 
     switch (step) {
         case 'intro':
@@ -279,15 +320,16 @@ window.updateForceGraph = function(step, direction) {
             highlightSingleCluster('market-analysis');
             break;
         case 'structured-prompt':
-            highlightMultipleClusters([
+            highlightMultipleClustersSequential([
+                'market-analysis',
                 'estimation-techniques',
-                'demographics',
                 'health-economics',
                 'consumer-behavior',
                 'digital-media',
                 'subscription-models',
-                'data-analysis',
-                'market-analysis'
+                'demographics',
+                'business-strategy',
+                'data-analysis'
             ]);
             break;
         case 'key-insight':
@@ -305,19 +347,33 @@ window.updateForceGraph = function(step, direction) {
 function resetGraph() {
     if (!window.graphSelections) return;
 
-    const { nodes, links } = window.graphSelections;
+    const { nodes, links, labels, boxes } = window.graphSelections;
 
     nodes
         .transition()
-        .duration(300)
-        .attr('opacity', 0.6)
-        .attr('fill', d => d.clusterColor);
+        .duration(600)
+        .attr('opacity', 0.5)
+        .attr('r', d => d.radius)
+        .attr('fill', d => d.clusterColor)
+        .attr('stroke-width', 1);
 
     links
         .transition()
-        .duration(300)
-        .attr('stroke-opacity', 0.1)
-        .attr('stroke-width', 1);
+        .duration(600)
+        .attr('stroke-opacity', 0.15)
+        .attr('stroke-width', 1)
+        .attr('stroke', '#95a5a6');
+
+    labels
+        .transition()
+        .duration(600)
+        .attr('class', 'cluster-label')
+        .attr('opacity', 1);
+
+    boxes
+        .transition()
+        .duration(600)
+        .attr('opacity', 0);
 }
 
 /**
@@ -326,90 +382,130 @@ function resetGraph() {
 function highlightSingleCluster(clusterId) {
     if (!window.graphSelections) return;
 
-    const { nodes, links } = window.graphSelections;
+    const { nodes, links, labels, boxes } = window.graphSelections;
 
-    // Dim all nodes
+    // Dim all nodes first
     nodes
         .transition()
-        .duration(300)
-        .attr('opacity', d => d.cluster === clusterId ? 0.9 : 0.2)
-        .attr('fill', d => d.cluster === clusterId ? '#f39c12' : d.clusterColor);
+        .duration(800)
+        .attr('opacity', d => d.cluster === clusterId ? 1 : 0.1)
+        .attr('r', d => d.cluster === clusterId ? d.radius * 2 : d.radius)
+        .attr('fill', d => d.cluster === clusterId ? '#e74c3c' : d.clusterColor)
+        .attr('stroke-width', d => d.cluster === clusterId ? 2 : 1);
 
     // Dim all links
     links
         .transition()
-        .duration(300)
+        .duration(800)
         .attr('stroke-opacity', 0.05);
 
-    // Pulse highlighted nodes
-    nodes.filter(d => d.cluster === clusterId)
+    // Highlight cluster label
+    labels
         .transition()
-        .duration(1000)
-        .attr('r', d => d.radius * 1.5)
+        .duration(800)
+        .attr('class', d => d.id === clusterId ? 'cluster-label active' : 'cluster-label')
+        .attr('opacity', d => d.id === clusterId ? 1 : 0.3);
+
+    // Show highlight box around the cluster
+    boxes
+        .filter(d => d.id === clusterId)
         .transition()
-        .duration(1000)
-        .attr('r', d => d.radius)
-        .on('end', function repeat() {
-            d3.select(this)
-                .transition()
-                .duration(1000)
-                .attr('r', d => d.radius * 1.5)
-                .transition()
-                .duration(1000)
-                .attr('r', d => d.radius)
-                .on('end', repeat);
-        });
+        .duration(800)
+        .attr('opacity', 0.6)
+        .attr('stroke', '#e74c3c')
+        .attr('stroke-width', 4);
 }
 
 /**
- * Highlight multiple clusters (structured prompt)
+ * Highlight multiple clusters sequentially (structured prompt)
  */
-function highlightMultipleClusters(clusterIds) {
+function highlightMultipleClustersSequential(clusterIds) {
     if (!window.graphSelections) return;
 
-    const { nodes, links } = window.graphSelections;
+    const { nodes, links, labels, boxes } = window.graphSelections;
 
-    // Highlight nodes in specified clusters
+    // First, reset everything to dim
     nodes
-        .transition()
-        .duration(800)
-        .delay((d, i) => {
-            // Stagger activation by cluster
-            const clusterIndex = clusterIds.indexOf(d.cluster);
-            return clusterIndex >= 0 ? clusterIndex * 100 : 0;
-        })
-        .attr('opacity', d => clusterIds.includes(d.cluster) ? 0.9 : 0.1)
-        .attr('fill', d => clusterIds.includes(d.cluster) ? '#3498db' : d.clusterColor);
+        .attr('opacity', 0.1)
+        .attr('r', d => d.radius)
+        .attr('fill', d => d.clusterColor)
+        .attr('stroke-width', 1);
 
-    // Highlight inter-cluster links
     links
-        .transition()
-        .duration(600)
-        .delay(800) // After nodes activate
-        .attr('stroke-opacity', d => {
-            const sourceCluster = graphData.nodes.find(n => n.id === d.source.id)?.cluster;
-            const targetCluster = graphData.nodes.find(n => n.id === d.target.id)?.cluster;
-            const isInterCluster = sourceCluster !== targetCluster &&
-                                    clusterIds.includes(sourceCluster) &&
-                                    clusterIds.includes(targetCluster);
-            return isInterCluster ? 0.4 : 0.05;
-        })
-        .attr('stroke-width', d => {
-            const sourceCluster = graphData.nodes.find(n => n.id === d.source.id)?.cluster;
-            const targetCluster = graphData.nodes.find(n => n.id === d.target.id)?.cluster;
-            const isInterCluster = sourceCluster !== targetCluster &&
-                                    clusterIds.includes(sourceCluster) &&
-                                    clusterIds.includes(targetCluster);
-            return isInterCluster ? 2 : 1;
-        })
-        .attr('stroke', d => {
-            const sourceCluster = graphData.nodes.find(n => n.id === d.source.id)?.cluster;
-            const targetCluster = graphData.nodes.find(n => n.id === d.target.id)?.cluster;
-            const isInterCluster = sourceCluster !== targetCluster &&
-                                    clusterIds.includes(sourceCluster) &&
-                                    clusterIds.includes(targetCluster);
-            return isInterCluster ? '#3498db' : '#999';
-        });
+        .attr('stroke-opacity', 0.05)
+        .attr('stroke-width', 1);
+
+    labels
+        .attr('opacity', 0.2)
+        .attr('class', 'cluster-label');
+
+    boxes
+        .attr('opacity', 0);
+
+    // Sequentially highlight each cluster
+    clusterIds.forEach((clusterId, index) => {
+        const delay = index * 400; // 400ms between each cluster
+
+        // Highlight nodes
+        nodes
+            .filter(d => d.cluster === clusterId)
+            .transition()
+            .delay(delay)
+            .duration(600)
+            .attr('opacity', 1)
+            .attr('r', d => d.radius * 1.8)
+            .attr('fill', '#3498db')
+            .attr('stroke-width', 2);
+
+        // Highlight label
+        labels
+            .filter(d => d.id === clusterId)
+            .transition()
+            .delay(delay)
+            .duration(600)
+            .attr('class', 'cluster-label active')
+            .attr('opacity', 1);
+
+        // Show highlight box
+        boxes
+            .filter(d => d.id === clusterId)
+            .transition()
+            .delay(delay)
+            .duration(600)
+            .attr('opacity', 0.4)
+            .attr('stroke', '#3498db')
+            .attr('stroke-width', 3);
+    });
+
+    // After all clusters are highlighted, show inter-cluster links
+    const totalDelay = clusterIds.length * 400;
+
+    setTimeout(() => {
+        links
+            .transition()
+            .duration(800)
+            .attr('stroke-opacity', d => {
+                const sourceCluster = graphData.nodes.find(n => n.id === d.source.id)?.cluster;
+                const targetCluster = graphData.nodes.find(n => n.id === d.target.id)?.cluster;
+                const bothActive = clusterIds.includes(sourceCluster) && clusterIds.includes(targetCluster);
+                const isInterCluster = sourceCluster !== targetCluster;
+                return (bothActive && isInterCluster) ? 0.6 : 0.05;
+            })
+            .attr('stroke-width', d => {
+                const sourceCluster = graphData.nodes.find(n => n.id === d.source.id)?.cluster;
+                const targetCluster = graphData.nodes.find(n => n.id === d.target.id)?.cluster;
+                const bothActive = clusterIds.includes(sourceCluster) && clusterIds.includes(targetCluster);
+                const isInterCluster = sourceCluster !== targetCluster;
+                return (bothActive && isInterCluster) ? 2.5 : 1;
+            })
+            .attr('stroke', d => {
+                const sourceCluster = graphData.nodes.find(n => n.id === d.source.id)?.cluster;
+                const targetCluster = graphData.nodes.find(n => n.id === d.target.id)?.cluster;
+                const bothActive = clusterIds.includes(sourceCluster) && clusterIds.includes(targetCluster);
+                const isInterCluster = sourceCluster !== targetCluster;
+                return (bothActive && isInterCluster) ? '#3498db' : '#95a5a6';
+            });
+    }, totalDelay);
 }
 
 /**
@@ -418,11 +514,12 @@ function highlightMultipleClusters(clusterIds) {
 function fadeOutGraph() {
     if (!window.graphSelections) return;
 
-    const { nodes, links, labels } = window.graphSelections;
+    const { nodes, links, labels, boxes } = window.graphSelections;
 
-    nodes.transition().duration(800).attr('opacity', 0);
-    links.transition().duration(800).attr('stroke-opacity', 0);
-    labelGroup.selectAll('text').transition().duration(800).attr('opacity', 0);
+    nodes.transition().duration(1000).attr('opacity', 0);
+    links.transition().duration(1000).attr('stroke-opacity', 0);
+    labels.transition().duration(1000).attr('opacity', 0);
+    boxes.transition().duration(1000).attr('opacity', 0);
 }
 
 // Initialize on load
