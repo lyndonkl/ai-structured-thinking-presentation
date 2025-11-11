@@ -233,6 +233,21 @@ a:hover {
     flex: 0 0 50%; /* Take up 50% of width */
     position: relative;
     z-index: 10;
+    background: #ffffff; /* White background for text */
+}
+
+.example-container .step {
+    padding: var(--spacing-lg);
+}
+
+.example-container .narrative-overlay {
+    background: white;
+    padding: var(--spacing-md);
+}
+
+.example-container .explanation,
+.example-container p {
+    color: #2c3e50; /* Darker text for better contrast */
 }
 
 #section2 {

@@ -306,7 +306,7 @@ function renderFermiTree(container) {
 function renderBoundsVisualization(container) {
     container.html(''); // Clear previous
 
-    const width = 800;
+    const width = 900; // Wider to accommodate labels
     const height = 400;
 
     const svg = container.append('svg')
@@ -319,7 +319,7 @@ function renderBoundsVisualization(container) {
     // Range visualization
     const scale = d3.scaleLinear()
         .domain([0, 60])
-        .range([50, width - 50]);
+        .range([100, width - 150]); // More padding on both sides
 
     // Draw range line
     svg.append('line')
