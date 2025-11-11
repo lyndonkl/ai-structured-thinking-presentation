@@ -245,8 +245,9 @@ a:hover {
     padding: var(--spacing-md);
 }
 
-.example-container .explanation,
-.example-container p {
+/* Only apply dark text to the RIGHT side (scroll-text), not the visualization area */
+.example-container .scroll-text .explanation,
+.example-container .scroll-text p {
     color: #2c3e50; /* Darker text for better contrast */
 }
 
