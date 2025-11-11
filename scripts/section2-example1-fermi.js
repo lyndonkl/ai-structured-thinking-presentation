@@ -68,28 +68,29 @@ function addExample1Steps() {
             `
         },
         {
-            id: 'structured-approach',
-            title: 'The Structured Approach',
+            id: 'structured-query',
+            title: 'The Structured Query',
             content: `
-                <div class="before-after-container">
-                    <div>
-                        <div class="prompt-box structured">
-                            <h3>Structured query:</h3>
-                            <p>"I want to build an AI chatbot for weight loss. Estimate the SAM using Fermi decomposition."</p>
-                        </div>
-                    </div>
-                    <div>
-                        <h4>Clarifying Questions:</h4>
-                        <div class="qa-list">
-                            <p><strong>Geographic scope?</strong> → US Market</p>
-                            <p><strong>TAM/SAM/SOM?</strong> → SAM</p>
-                            <p><strong>Business model?</strong> → Free + Ads</p>
-                            <p><strong>Timeline?</strong> → 6-month MVP</p>
-                            <p><strong>Team size?</strong> → 3 engineers</p>
-                        </div>
-                    </div>
+                <div class="prompt-box structured">
+                    <h3>Structured query:</h3>
+                    <p>"I want to build an AI chatbot for weight loss. Estimate the SAM using Fermi decomposition."</p>
                 </div>
-                <p class="explanation">The skill starts by clarifying context—not assuming, but asking.</p>
+                <p class="explanation">Instead of asking for a generic number, we're asking for a specific methodology: Fermi estimation.</p>
+            `
+        },
+        {
+            id: 'clarifying-questions',
+            title: 'Clarifying Context',
+            content: `
+                <h3>The Skill Starts by Asking</h3>
+                <div class="qa-list" style="margin-top: 1.5rem;">
+                    <p><strong>Geographic scope?</strong> → US Market</p>
+                    <p><strong>TAM/SAM/SOM?</strong> → SAM</p>
+                    <p><strong>Business model?</strong> → Free + Ads</p>
+                    <p><strong>Timeline?</strong> → 6-month MVP</p>
+                    <p><strong>Team size?</strong> → 3 engineers</p>
+                </div>
+                <p class="explanation" style="margin-top: 1.5rem;">The skill starts by clarifying context—not assuming, but asking.</p>
             `
         },
         {
@@ -168,11 +169,9 @@ function handleExample1StepEnter(response) {
 
     switch (step) {
         case 'search-style':
-            viz.html(''); // Clear
-            break;
-
-        case 'structured-approach':
-            viz.html(''); // Clear
+        case 'structured-query':
+        case 'clarifying-questions':
+            viz.html(''); // Clear - no visualization for these steps
             break;
 
         case 'decomposition':

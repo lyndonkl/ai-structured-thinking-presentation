@@ -65,6 +65,16 @@ function addExample2Steps() {
             `
         },
         {
+            id: 'structured-query',
+            content: `
+                <div class="prompt-box structured">
+                    <h3>Structured query:</h3>
+                    <p>"I want to migrate an existing API from using Redis cache as primary data store to PostgreSQL. Plan this migration with risk analysis and success metrics."</p>
+                </div>
+                <p class="explanation">Not just "how to migrate" but "plan with risk analysis and metrics" - asking for comprehensive thinking.</p>
+            `
+        },
+        {
             id: 'context-gathering',
             content: `
                 <h3>Understanding Your Constraints</h3>
@@ -112,6 +122,10 @@ function handleExample2StepEnter(response) {
     const viz = d3.select('#example2-viz');
 
     switch (step) {
+        case 'generic-checklist':
+        case 'structured-query':
+            viz.html(''); // No visualization for these steps
+            break;
         case 'context-gathering':
             renderContextCards(viz);
             break;

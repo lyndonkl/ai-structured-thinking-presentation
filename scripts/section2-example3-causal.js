@@ -66,6 +66,16 @@ function addExample3Steps() {
             `
         },
         {
+            id: 'structured-query',
+            content: `
+                <div class="prompt-box structured">
+                    <h3>Structured query:</h3>
+                    <p>"I have a diagnosis tool with sharp drop-offs. Use causal inference to identify potential confounders and design proper experiments."</p>
+                </div>
+                <p class="explanation">Not asking for test duration, but for causal analysis - identifying WHY there are drop-offs and how to test properly.</p>
+            `
+        },
+        {
             id: 'data-pattern',
             content: `
                 <h3>The Observed Data</h3>
@@ -156,6 +166,10 @@ function handleExample3StepEnter(response) {
     const viz = d3.select('#example3-viz');
 
     switch (step) {
+        case 'generic-calculator':
+        case 'structured-query':
+            viz.html(''); // No visualization for these steps
+            break;
         case 'data-pattern':
             renderBarChart(viz);
             break;

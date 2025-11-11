@@ -313,6 +313,7 @@ window.updateForceGraph = function(step, direction) {
     cancelAllAnimations(); // Stop any ongoing animations
 
     switch (step) {
+        case 'title':
         case 'intro':
             resetGraph();
             break;

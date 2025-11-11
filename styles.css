@@ -129,6 +129,22 @@ a:hover {
 
 #section1 {
     background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    display: flex;
+    flex-direction: row;
+}
+
+#section1 .scroll-graphic {
+    flex: 0 0 60%; /* Graph takes 60% on left */
+    position: sticky;
+    top: 0;
+    height: 100vh;
+}
+
+#section1 .scroll-text {
+    flex: 0 0 40%; /* Text takes 40% on right */
+    position: relative;
+    background: rgba(255, 255, 255, 0.95);
+    padding: var(--spacing-lg);
 }
 
 #force-graph {
@@ -137,11 +153,15 @@ a:hover {
 }
 
 .narrative-overlay {
-    background: var(--overlay-bg);
-    padding: var(--spacing-lg);
-    border-radius: 12px;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-    max-width: 700px;
+    background: transparent; /* No box, text is directly on white background */
+    padding: 0;
+    border-radius: 0;
+    box-shadow: none;
+    max-width: 100%;
+}
+
+#section1 .narrative-overlay {
+    padding: var(--spacing-md);
 }
 
 .intro-text {
