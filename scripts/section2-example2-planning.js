@@ -175,106 +175,233 @@ function handleExample2StepEnter(response) {
 
 function renderContextCards(container) {
     container.html('');
-    const html = `
-        <div style="background: white; padding: 3rem; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.3); max-width: 700px;">
-            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem;">
-                <div style="background: #3498db; color: white; padding: 1.5rem; border-radius: 8px; text-align: center; font-size: 1.2rem; font-weight: bold;">500K providers</div>
-                <div style="background: #3498db; color: white; padding: 1.5rem; border-radius: 8px; text-align: center; font-size: 1.2rem; font-weight: bold;">1.2M locations</div>
-                <div style="background: #3498db; color: white; padding: 1.5rem; border-radius: 8px; text-align: center; font-size: 1.2rem; font-weight: bold;">30GB Redis cache</div>
-                <div style="background: #3498db; color: white; padding: 1.5rem; border-radius: 8px; text-align: center; font-size: 1.2rem; font-weight: bold;">15 API endpoints</div>
-                <div style="background: #3498db; color: white; padding: 1.5rem; border-radius: 8px; text-align: center; font-size: 1.2rem; font-weight: bold;">50K req/day</div>
-                <div style="background: #3498db; color: white; padding: 1.5rem; border-radius: 8px; text-align: center; font-size: 1.2rem; font-weight: bold;">6-month timeline</div>
-            </div>
-        </div>
-    `;
-    container.html(html);
+
+    const cardData = [
+        '500K providers',
+        '1.2M locations',
+        '30GB Redis cache',
+        '15 API endpoints',
+        '50K req/day',
+        '6-month timeline'
+    ];
+
+    // Create wrapper div
+    const wrapper = container.append('div')
+        .style('background', 'white')
+        .style('padding', '3rem')
+        .style('border-radius', '12px')
+        .style('box-shadow', '0 4px 20px rgba(0,0,0,0.3)')
+        .style('max-width', '700px');
+
+    // Create grid container
+    const grid = wrapper.append('div')
+        .style('display', 'grid')
+        .style('grid-template-columns', 'repeat(2, 1fr)')
+        .style('gap', '1.5rem');
+
+    // Add cards with animation
+    cardData.forEach((text, i) => {
+        const card = grid.append('div')
+            .style('background', '#3498db')
+            .style('color', 'white')
+            .style('padding', '1.5rem')
+            .style('border-radius', '8px')
+            .style('text-align', 'center')
+            .style('font-size', '1.2rem')
+            .style('font-weight', 'bold')
+            .style('opacity', 0)
+            .style('transform', 'scale(0.8) translateY(20px)')
+            .text(text);
+
+        // Animate card appearing
+        setTimeout(() => {
+            card.transition()
+                .delay(i * 100)
+                .duration(400)
+                .ease(d3.easeBackOut)
+                .style('opacity', 1)
+                .style('transform', 'scale(1) translateY(0)');
+        }, 10);
+    });
 }
 
 function renderTimeline(container) {
     container.html('');
-    const html = `
-        <div style="padding: 2rem; background: white; border-radius: 12px; max-width: 700px; box-shadow: 0 4px 20px rgba(0,0,0,0.3);">
-            <div style="margin-bottom: 1.5rem;">
-                <h4 style="color: var(--accent-blue);">Month 1-2: Foundation</h4>
-                <ul style="font-size: 0.9rem; margin-left: 1.5rem;">
-                    <li>Schema design</li>
-                    <li>Infrastructure setup</li>
-                    <li>Initial migration</li>
-                </ul>
-            </div>
-            <div style="margin-bottom: 1.5rem;">
-                <h4 style="color: var(--accent-blue);">Month 3: Dual-Write</h4>
-                <ul style="font-size: 0.9rem; margin-left: 1.5rem;">
-                    <li>Pipeline refactor</li>
-                    <li>Reconciliation</li>
-                </ul>
-            </div>
-            <div style="margin-bottom: 1.5rem;">
-                <h4 style="color: var(--accent-blue);">Month 4-5: API Migration</h4>
-                <ul style="font-size: 0.9rem; margin-left: 1.5rem;">
-                    <li>New endpoints</li>
-                    <li>Load testing</li>
-                    <li>Shadow traffic</li>
-                </ul>
-            </div>
-            <div>
-                <h4 style="color: var(--accent-green);">Month 6: Cutover</h4>
-                <ul style="font-size: 0.9rem; margin-left: 1.5rem;">
-                    <li>Gradual rollout (5% → 100%)</li>
-                </ul>
-            </div>
-        </div>
-    `;
-    container.html(html);
+
+    const phases = [
+        { title: 'Month 1-2: Foundation', color: '#3498db', items: ['Schema design', 'Infrastructure setup', 'Initial migration'] },
+        { title: 'Month 3: Dual-Write', color: '#3498db', items: ['Pipeline refactor', 'Reconciliation'] },
+        { title: 'Month 4-5: API Migration', color: '#3498db', items: ['New endpoints', 'Load testing', 'Shadow traffic'] },
+        { title: 'Month 6: Cutover', color: '#27ae60', items: ['Gradual rollout (5% → 100%)'] }
+    ];
+
+    // Create wrapper
+    const wrapper = container.append('div')
+        .style('padding', '2rem')
+        .style('background', 'white')
+        .style('border-radius', '12px')
+        .style('max-width', '700px')
+        .style('box-shadow', '0 4px 20px rgba(0,0,0,0.3)');
+
+    // Add phases with animation
+    phases.forEach((phase, i) => {
+        const phaseDiv = wrapper.append('div')
+            .style('margin-bottom', i < phases.length - 1 ? '1.5rem' : '0')
+            .style('opacity', 0)
+            .style('transform', 'translateX(-20px)');
+
+        phaseDiv.append('h4')
+            .style('color', phase.color)
+            .style('margin-bottom', '0.5rem')
+            .text(phase.title);
+
+        const list = phaseDiv.append('ul')
+            .style('font-size', '0.9rem')
+            .style('margin-left', '1.5rem');
+
+        phase.items.forEach(item => {
+            list.append('li').text(item);
+        });
+
+        // Animate phase appearing
+        setTimeout(() => {
+            phaseDiv.transition()
+                .delay(i * 200)
+                .duration(400)
+                .ease(d3.easeCubicOut)
+                .style('opacity', 1)
+                .style('transform', 'translateX(0)');
+        }, 10);
+    });
 }
 
 function renderRiskHeatmap(container) {
     container.html('');
-    const html = `
-        <div style="padding: 2rem; background: white; border-radius: 12px; max-width: 800px; box-shadow: 0 4px 20px rgba(0,0,0,0.3);">
-            <h4 style="text-align: center; margin-bottom: 1.5rem;">Top Risks & Mitigations</h4>
-            <div style="display: grid; gap: 1rem;">
-                <div style="background: #fee; padding: 1rem; border-radius: 8px; border-left: 4px solid var(--accent-red);">
-                    <h5>R1: Data Loss (High Impact, Medium Likelihood)</h5>
-                    <p style="font-size: 0.9rem;"><strong>Mitigation:</strong> Dry-run migration + automated validation + keep Redis backup</p>
-                </div>
-                <div style="background: #ffe; padding: 1rem; border-radius: 8px; border-left: 4px solid var(--accent-yellow);">
-                    <h5>R2: Performance Issues (High Impact, Medium Likelihood)</h5>
-                    <p style="font-size: 0.9rem;"><strong>Mitigation:</strong> EXPLAIN ANALYZE all queries + load testing + caching layer</p>
-                </div>
-                <div style="background: #fee; padding: 1rem; border-radius: 8px; border-left: 4px solid var(--accent-red);">
-                    <h5>R5: Production Outage (High Impact, Low Likelihood)</h5>
-                    <p style="font-size: 0.9rem;"><strong>Mitigation:</strong> Gradual rollout (5%→25%→50%→100%) + auto-rollback</p>
-                </div>
-            </div>
-        </div>
-    `;
-    container.html(html);
+
+    const risks = [
+        { title: 'R1: Data Loss (High Impact, Medium Likelihood)', mitigation: 'Dry-run migration + automated validation + keep Redis backup', bg: '#fee', border: '#e74c3c' },
+        { title: 'R2: Performance Issues (High Impact, Medium Likelihood)', mitigation: 'EXPLAIN ANALYZE all queries + load testing + caching layer', bg: '#ffe', border: '#f39c12' },
+        { title: 'R5: Production Outage (High Impact, Low Likelihood)', mitigation: 'Gradual rollout (5%→25%→50%→100%) + auto-rollback', bg: '#fee', border: '#e74c3c' }
+    ];
+
+    // Create wrapper
+    const wrapper = container.append('div')
+        .style('padding', '2rem')
+        .style('background', 'white')
+        .style('border-radius', '12px')
+        .style('max-width', '800px')
+        .style('box-shadow', '0 4px 20px rgba(0,0,0,0.3)');
+
+    // Add title
+    wrapper.append('h4')
+        .style('text-align', 'center')
+        .style('margin-bottom', '1.5rem')
+        .text('Top Risks & Mitigations');
+
+    // Create risks container
+    const risksContainer = wrapper.append('div')
+        .style('display', 'grid')
+        .style('gap', '1rem');
+
+    // Add risk cards with animation
+    risks.forEach((risk, i) => {
+        const riskDiv = risksContainer.append('div')
+            .style('background', risk.bg)
+            .style('padding', '1rem')
+            .style('border-radius', '8px')
+            .style('border-left', `4px solid ${risk.border}`)
+            .style('opacity', 0)
+            .style('transform', 'translateY(20px)');
+
+        riskDiv.append('h5')
+            .style('margin-bottom', '0.5rem')
+            .text(risk.title);
+
+        riskDiv.append('p')
+            .style('font-size', '0.9rem')
+            .style('margin', '0')
+            .html(`<strong>Mitigation:</strong> ${risk.mitigation}`);
+
+        // Animate risk appearing
+        setTimeout(() => {
+            riskDiv.transition()
+                .delay(i * 150)
+                .duration(400)
+                .ease(d3.easeBackOut)
+                .style('opacity', 1)
+                .style('transform', 'translateY(0)');
+        }, 10);
+    });
 }
 
 function renderMetrics(container) {
     container.html('');
-    const html = `
-        <div style="padding: 2rem; background: white; border-radius: 12px; max-width: 800px; box-shadow: 0 4px 20px rgba(0,0,0,0.3);">
-            <div style="margin-bottom: 2rem;">
-                <h4 style="color: var(--accent-blue);">Leading Indicators</h4>
-                <p style="font-size: 0.9rem;">Schema design complete: 0% → 100% by Week 4</p>
-                <p style="font-size: 0.9rem;">Data validation pass: → 99.99% match required</p>
-                <p style="font-size: 0.9rem;">Dual-write drift: → <0.01% divergence</p>
-            </div>
-            <div style="margin-bottom: 2rem;">
-                <h4 style="color: var(--accent-green);">Lagging Indicators</h4>
-                <p style="font-size: 0.9rem;">API p95 latency: 10+ sec → <500ms</p>
-                <p style="font-size: 0.9rem;">API p99 latency: 15 sec → <1 sec</p>
-                <p style="font-size: 0.9rem;">Database query time: N/A → <100ms avg</p>
-            </div>
-            <div>
-                <h4 style="color: var(--accent-red);">Counter-Metrics</h4>
-                <p style="font-size: 0.9rem;">❌ Data integrity: Zero tolerance for loss</p>
-                <p style="font-size: 0.9rem;">❌ API availability: Maintain 99.5%+ uptime</p>
-                <p style="font-size: 0.9rem;">❌ Feature parity: 100% of queries must work</p>
-            </div>
-        </div>
-    `;
-    container.html(html);
+
+    const sections = [
+        {
+            title: 'Leading Indicators',
+            color: '#3498db',
+            metrics: [
+                'Schema design complete: 0% → 100% by Week 4',
+                'Data validation pass: → 99.99% match required',
+                'Dual-write drift: → <0.01% divergence'
+            ]
+        },
+        {
+            title: 'Lagging Indicators',
+            color: '#27ae60',
+            metrics: [
+                'API p95 latency: 10+ sec → <500ms',
+                'API p99 latency: 15 sec → <1 sec',
+                'Database query time: N/A → <100ms avg'
+            ]
+        },
+        {
+            title: 'Counter-Metrics',
+            color: '#e74c3c',
+            metrics: [
+                '❌ Data integrity: Zero tolerance for loss',
+                '❌ API availability: Maintain 99.5%+ uptime',
+                '❌ Feature parity: 100% of queries must work'
+            ]
+        }
+    ];
+
+    // Create wrapper
+    const wrapper = container.append('div')
+        .style('padding', '2rem')
+        .style('background', 'white')
+        .style('border-radius', '12px')
+        .style('max-width', '800px')
+        .style('box-shadow', '0 4px 20px rgba(0,0,0,0.3)');
+
+    // Add sections with animation
+    sections.forEach((section, i) => {
+        const sectionDiv = wrapper.append('div')
+            .style('margin-bottom', i < sections.length - 1 ? '2rem' : '0')
+            .style('opacity', 0)
+            .style('transform', 'translateX(-20px)');
+
+        sectionDiv.append('h4')
+            .style('color', section.color)
+            .style('margin-bottom', '0.75rem')
+            .text(section.title);
+
+        section.metrics.forEach(metric => {
+            sectionDiv.append('p')
+                .style('font-size', '0.9rem')
+                .style('margin', '0.25rem 0')
+                .text(metric);
+        });
+
+        // Animate section appearing
+        setTimeout(() => {
+            sectionDiv.transition()
+                .delay(i * 200)
+                .duration(400)
+                .ease(d3.easeCubicOut)
+                .style('opacity', 1)
+                .style('transform', 'translateX(0)');
+        }, 10);
+    });
 }
