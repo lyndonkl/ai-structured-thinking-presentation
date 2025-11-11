@@ -39,7 +39,7 @@ function renderMetaExample(container) {
     container.html('');
 
     const html = `
-        <div style="background: white; padding: 2rem; border-radius: 12px; max-width: 700px; margin: 2rem auto;">
+        <div style="background: white; padding: 2rem; border-radius: 12px; max-width: 700px; margin: 2rem auto; box-shadow: 0 4px 20px rgba(0,0,0,0.3);">
             <h4 style="text-align: center; margin-bottom: 1.5rem;">Techniques Used in Example 1</h4>
             <div style="display: grid; gap: 1rem;">
                 <div style="background: #e8f5e9; padding: 1rem; border-radius: 8px; border-left: 4px solid var(--accent-green);">
@@ -72,7 +72,7 @@ function renderCustomPrompt(container) {
     container.html('');
 
     const html = `
-        <div style="background: white; padding: 2rem; border-radius: 12px; max-width: 800px; margin: 2rem auto;">
+        <div style="background: white; padding: 2rem; border-radius: 12px; max-width: 800px; margin: 2rem auto; box-shadow: 0 4px 20px rgba(0,0,0,0.3);">
             <h4 style="text-align: center; margin-bottom: 1.5rem;">Deep Research Prompt Structure</h4>
             <div class="prompt-box deep-research" style="font-size: 0.95rem; line-height: 1.8;">
                 <p><span style="background: #fff3cd; padding: 0 4px;">Based on the Fermi estimation approach we just used</span>,
@@ -110,8 +110,8 @@ function renderOutputPreview(container) {
     container.html('');
 
     const html = `
-        <div style="background: white; padding: 2rem; border-radius: 12px; max-width: 800px; margin: 2rem auto;">
-            <h4 style="text-align: center; margin-bottom: 1.5rem; color: var(--accent-blue);">
+        <div style="background: white; padding: 2rem; border-radius: 12px; max-width: 800px; margin: 2rem auto; box-shadow: 0 4px 20px rgba(0,0,0,0.3);">
+            <h4 style="text-align: center; margin-bottom: 1.5rem; color: #3498db;">
                 Generated Output: "Strategic Estimation Techniques Guide"
             </h4>
 
@@ -147,7 +147,7 @@ function renderOutputPreview(container) {
                 <p style="margin-top: 1rem;"><strong>6. Integration Strategies</strong></p>
             </div>
 
-            <div style="background: #e8f5e9; padding: 1.5rem; border-radius: 8px; margin-top: 2rem; border-left: 4px solid var(--accent-green);">
+            <div style="background: #e8f5e9; padding: 1.5rem; border-radius: 8px; margin-top: 2rem; border-left: 4px solid #27ae60;">
                 <p style="font-weight: 600; margin-bottom: 0.5rem;">This isn't generic content—</p>
                 <p style="font-size: 0.95rem;">
                     It's research grounded in YOUR specific context (the Fermi work we just did),
