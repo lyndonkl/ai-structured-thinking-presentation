@@ -73,9 +73,29 @@ function addExample1Steps() {
             content: `
                 <div class="prompt-box structured">
                     <h3>Structured query:</h3>
-                    <p>"I want to build an AI chatbot for weight loss. Estimate the SAM using Fermi decomposition."</p>
+                    <div style="font-size: 0.95rem; line-height: 1.7;">
+                        <p style="margin-bottom: 0.75rem;"><strong># Role:</strong> Market Sizing Analyst using Fermi Estimation</p>
+
+                        <p style="margin-bottom: 0.75rem;"><strong>## Context:</strong><br>
+                        I'm evaluating a personalized health newsletter subscription service. The product will provide AI-curated health content, wellness tips, and chronic disease management advice tailored to individual user profiles.</p>
+
+                        <p style="margin-bottom: 0.75rem;"><strong>## Task:</strong><br>
+                        Use Fermi estimation to calculate the market size for this product. Break down the calculation into estimable components and show your decomposition clearly.</p>
+
+                        <p style="margin-bottom: 0.75rem;"><strong>## Method Requirements:</strong></p>
+                        <ul style="margin-left: 1.5rem; margin-bottom: 0.75rem; line-height: 1.6;">
+                            <li>Decompose into estimable parts</li>
+                            <li>State assumptions explicitly</li>
+                            <li>Provide optimistic and pessimistic bounds</li>
+                            <li>Triangulate with alternate approach</li>
+                            <li>Identify key drivers and sensitivity</li>
+                        </ul>
+
+                        <p style="margin-bottom: 0;"><strong>## Output Format:</strong><br>
+                        Show decomposition steps, calculation, bounds, sanity checks, and final estimate with confidence range.</p>
+                    </div>
                 </div>
-                <p class="explanation">Instead of asking for a generic number, we're asking for a specific methodology: Fermi estimation.</p>
+                <p class="explanation">A structured prompt specifies the role, provides context, names the methodology (Fermi estimation), and defines output requirements—but leaves room for the skill to ask clarifying questions.</p>
             `
         },
         {
