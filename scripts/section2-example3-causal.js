@@ -43,26 +43,28 @@ function addExample3Steps() {
             content: `
                 <div class="prompt-box simple">
                     <h3>Simple query:</h3>
-                    <p>"How long should I run my A/B test for a diagnosis tool?"</p>
+                    <p>"We're seeing 45% drop-off in our diagnosis tool, with long flows performing worse than short flows. I want to A/B test a shorter flow to improve completion rates. Can you help me design the test and calculate how long to run it for statistical significance?"</p>
                 </div>
                 <div class="generic-response">
-                    <h4>A/B Test Duration Calculator</h4>
-                    <p>To determine test duration:</p>
-                    <ol>
-                        <li><strong>Sample size calculation:</strong>
-                            <ul>
-                                <li>Baseline conversion rate: [input]</li>
-                                <li>Minimum detectable effect: [input]</li>
-                                <li>Statistical power: 80%</li>
-                                <li>Significance level: α = 0.05</li>
-                            </ul>
-                        </li>
-                        <li><strong>Formula:</strong> n = 16σ²/δ²</li>
-                        <li><strong>Typical duration:</strong> 2-4 weeks</li>
-                    </ol>
-                    <p><strong>Best practices:</strong> Run test for full business cycle, ensure sufficient sample size, check for statistical significance, avoid peeking at results early</p>
+                    <h4>A/B Test Design: Short vs Long Flow</h4>
+                    <p><strong>Test Setup:</strong></p>
+                    <ul>
+                        <li><strong>Control:</strong> Current long flow (8 steps)</li>
+                        <li><strong>Treatment:</strong> New short flow (3 steps)</li>
+                        <li><strong>Primary Metric:</strong> Completion rate (currently 55%)</li>
+                        <li><strong>Target Effect:</strong> +10 percentage points improvement</li>
+                    </ul>
+                    <p><strong>Sample Size Calculation:</strong></p>
+                    <ul>
+                        <li>Baseline: 55% completion</li>
+                        <li>MDE: 10% (absolute)</li>
+                        <li>Power: 80%, α = 0.05</li>
+                        <li>Required: 1,570 users per variant</li>
+                    </ul>
+                    <p><strong>Duration:</strong> With 500 users/day → <strong>6-7 days</strong></p>
+                    <p><strong>Best practices:</strong> Randomize 50/50, avoid weekends if business cycles matter, wait for full sample before concluding</p>
                 </div>
-                <p class="explanation">Assumes you know what to test. Doesn't identify confounders or alternative explanations.</p>
+                <p class="explanation">Sounds comprehensive, but assumes the correlation you observed (short flows = better) is causal. Doesn't question whether flow length is randomly assigned or if there are confounders.</p>
             `
         },
         {
@@ -70,9 +72,29 @@ function addExample3Steps() {
             content: `
                 <div class="prompt-box structured">
                     <h3>Structured query:</h3>
-                    <p>"I have a diagnosis tool with sharp drop-offs. Use causal inference to identify potential confounders and design proper experiments."</p>
+                    <div style="font-size: 0.95rem; line-height: 1.7;">
+                        <p style="margin-bottom: 0.75rem;"><strong># Role:</strong> Causal Inference Analyst for Experiment Design</p>
+
+                        <p style="margin-bottom: 0.75rem;"><strong>## Context:</strong><br>
+                        We have a diagnosis tool with 45% drop-off. Initial analysis shows long flows (8 steps) have 35% completion vs short flows (3 steps) with 80% completion. Before running an A/B test to shorten all flows, I need to understand if this correlation is causal.</p>
+
+                        <p style="margin-bottom: 0.75rem;"><strong>## Task:</strong><br>
+                        Use causal inference to investigate whether flow length truly causes drop-off, or if there are confounding variables creating spurious correlation. Design a proper experiment if needed.</p>
+
+                        <p style="margin-bottom: 0.75rem;"><strong>## Method Requirements:</strong></p>
+                        <ul style="margin-left: 1.5rem; margin-bottom: 0.75rem; line-height: 1.6;">
+                            <li><strong>Define Effect:</strong> Quantify drop-off, establish baseline, identify when it occurs</li>
+                            <li><strong>Generate Hypotheses:</strong> Proximate causes (flow length) vs root causes, potential confounders</li>
+                            <li><strong>Build Causal Model:</strong> Draw causal chains, identify confounding relationships, specify mechanisms</li>
+                            <li><strong>Test Causality:</strong> Check temporal sequence, assess counterfactuals, rule out confounders</li>
+                            <li><strong>Design Experiment:</strong> If needed, design experiment that controls for confounders</li>
+                        </ul>
+
+                        <p style="margin-bottom: 0;"><strong>## Output Format:</strong><br>
+                        Deliver causal model (diagram showing relationships), competing hypotheses assessed, confounders identified, and experimental design that tests true causal effect.</p>
+                    </div>
                 </div>
-                <p class="explanation">Not asking for test duration, but for causal analysis - identifying WHY there are drop-offs and how to test properly.</p>
+                <p class="explanation">A structured prompt asks the skill to question the observed correlation, build a causal model to identify confounders, and only then design the right experiment. The skill will investigate before jumping to testing.</p>
             `
         },
         {
