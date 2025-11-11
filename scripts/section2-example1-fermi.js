@@ -131,6 +131,45 @@ function addExample1Steps() {
             `
         },
         {
+            id: 'unit-economics-prompt',
+            title: 'Chaining Structured Prompts',
+            content: `
+                <div class="prompt-box structured">
+                    <h3>Follow-up Structured Query:</h3>
+                    <div style="font-size: 0.95rem; line-height: 1.7;">
+                        <p style="margin-bottom: 0.75rem;"><strong># Role:</strong> Unit Economics Analyst</p>
+
+                        <p style="margin-bottom: 0.75rem;"><strong>## Context:</strong><br>
+                        Based on the Fermi estimation above, the SAM for a personalized health newsletter is $4-60M. Before building, I need to validate whether the business model economics work at the unit level.</p>
+
+                        <p style="margin-bottom: 0.75rem;"><strong>## Task:</strong><br>
+                        Analyze the unit economics for this product. Calculate CAC, LTV, contribution margin, and payback period.</p>
+
+                        <p style="margin-bottom: 0.75rem;"><strong>## Assumptions:</strong></p>
+                        <ul style="margin-left: 1.5rem; margin-bottom: 0.75rem; line-height: 1.6;">
+                            <li>Business model: Free + Ads (health content, wellness tips)</li>
+                            <li>AI costs: LLM API costs for personalization</li>
+                            <li>Revenue model: Ad revenue per user</li>
+                            <li>User engagement: Daily active usage patterns</li>
+                        </ul>
+
+                        <p style="margin-bottom: 0.75rem;"><strong>## Method Requirements:</strong></p>
+                        <ul style="margin-left: 1.5rem; margin-bottom: 0.75rem; line-height: 1.6;">
+                            <li>Calculate revenue per user per year</li>
+                            <li>Calculate LLM costs per user per year</li>
+                            <li>Assess contribution margin</li>
+                            <li>Identify if model is viable at scale</li>
+                            <li>Recommend alternatives if not viable</li>
+                        </ul>
+
+                        <p style="margin-bottom: 0;"><strong>## Output Format:</strong><br>
+                        Show calculation breakdown, viability assessment, and alternative business models if needed.</p>
+                    </div>
+                </div>
+                <p class="explanation">Structured prompts can be chained: use output from one as context for the next. Market sizing → Unit economics → Pricing strategy. Each builds on the previous analysis.</p>
+            `
+        },
+        {
             id: 'unit-economics',
             title: 'Critical Insight',
             content: `
@@ -221,6 +260,10 @@ function handleExample1StepEnter(response) {
 
         case 'bounds':
             renderBoundsVisualization(viz);
+            break;
+
+        case 'unit-economics-prompt':
+            renderPromptChainVisualization(viz);
             break;
 
         case 'unit-economics':
@@ -447,6 +490,130 @@ function renderBoundsVisualization(container) {
                 .duration(500)
                 .ease(d3.easeCubicOut) // Fast start, slow end
                 .attr('width', item.impact * 50);
+        }, 10);
+    });
+}
+
+/**
+ * Render prompt chaining visualization
+ */
+function renderPromptChainVisualization(container) {
+    container.html(''); // Clear previous
+
+    const width = 900;
+    const height = 500;
+
+    const svg = container.append('svg')
+        .attr('width', width)
+        .attr('height', height)
+        .style('background', '#ffffff')
+        .style('border-radius', '12px')
+        .style('box-shadow', '0 4px 20px rgba(0,0,0,0.3)');
+
+    // Define prompt chain steps
+    const steps = [
+        { id: 1, label: 'Market Sizing\n(Fermi Estimation)', output: 'SAM: $4-60M', color: '#9b59b6', y: 80 },
+        { id: 2, label: 'Unit Economics\nAnalysis', output: 'Margin: -$1.73/user', color: '#3498db', y: 240 },
+        { id: 3, label: 'Business Model\nRedesign', output: 'Freemium: +$12.25/user', color: '#27ae60', y: 400 }
+    ];
+
+    const boxWidth = 200;
+    const boxHeight = 100;
+    const boxX = (width - boxWidth) / 2;
+
+    // Draw connections first (so they appear below boxes)
+    steps.slice(0, -1).forEach((step, i) => {
+        const startY = step.y + boxHeight;
+        const endY = steps[i + 1].y;
+
+        // Draw arrow line
+        const arrow = svg.append('line')
+            .attr('x1', boxX + boxWidth / 2)
+            .attr('y1', startY)
+            .attr('x2', boxX + boxWidth / 2)
+            .attr('y2', startY) // Start at same position
+            .attr('stroke', '#999')
+            .attr('stroke-width', 3)
+            .attr('marker-end', 'url(#arrowhead)')
+            .attr('opacity', 0);
+
+        // Animate arrow growing
+        setTimeout(() => {
+            arrow.transition()
+                .delay(500 + i * 800)
+                .duration(400)
+                .attr('y2', endY)
+                .attr('opacity', 1);
+        }, 10);
+    });
+
+    // Define arrowhead marker
+    svg.append('defs').append('marker')
+        .attr('id', 'arrowhead')
+        .attr('markerWidth', 10)
+        .attr('markerHeight', 10)
+        .attr('refX', 5)
+        .attr('refY', 3)
+        .attr('orient', 'auto')
+        .append('polygon')
+        .attr('points', '0 0, 10 3, 0 6')
+        .attr('fill', '#999');
+
+    // Draw boxes
+    steps.forEach((step, i) => {
+        // Box group
+        const box = svg.append('g')
+            .attr('opacity', 0);
+
+        // Box rectangle
+        box.append('rect')
+            .attr('x', boxX)
+            .attr('y', step.y)
+            .attr('width', boxWidth)
+            .attr('height', boxHeight)
+            .attr('fill', step.color)
+            .attr('rx', 8)
+            .attr('opacity', 0.9);
+
+        // Box label (multiline)
+        const lines = step.label.split('\n');
+        lines.forEach((line, lineIndex) => {
+            box.append('text')
+                .attr('x', boxX + boxWidth / 2)
+                .attr('y', step.y + 30 + lineIndex * 20)
+                .attr('text-anchor', 'middle')
+                .attr('font-size', '16px')
+                .attr('font-weight', 'bold')
+                .attr('fill', 'white')
+                .text(line);
+        });
+
+        // Output badge
+        box.append('rect')
+            .attr('x', boxX + 10)
+            .attr('y', step.y + boxHeight - 30)
+            .attr('width', boxWidth - 20)
+            .attr('height', 24)
+            .attr('fill', 'white')
+            .attr('rx', 4)
+            .attr('opacity', 0.9);
+
+        box.append('text')
+            .attr('x', boxX + boxWidth / 2)
+            .attr('y', step.y + boxHeight - 12)
+            .attr('text-anchor', 'middle')
+            .attr('font-size', '12px')
+            .attr('font-weight', 'bold')
+            .attr('fill', step.color)
+            .text(step.output);
+
+        // Animate box appearing
+        setTimeout(() => {
+            box.transition()
+                .delay(i * 800)
+                .duration(400)
+                .ease(d3.easeBackOut)
+                .attr('opacity', 1);
         }, 10);
     });
 }
