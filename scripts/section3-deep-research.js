@@ -11,7 +11,7 @@ window.updateSection3 = function(step, direction) {
 
     switch (step) {
         case 'workflow-intro':
-            viz.html(''); // Content in HTML
+            renderWorkflowCycle(viz);
             break;
 
         case 'meta-example':
@@ -31,6 +31,252 @@ window.updateSection3 = function(step, direction) {
             break;
     }
 };
+
+/**
+ * Render the workflow cycle diagram
+ */
+function renderWorkflowCycle(container) {
+    container.html('');
+
+    const width = 600;
+    const height = 600;
+    const centerX = width / 2;
+    const centerY = height / 2;
+    const radius = 160;
+
+    // Create SVG
+    const svg = container.append('svg')
+        .attr('width', width)
+        .attr('height', height)
+        .attr('viewBox', `0 0 ${width} ${height}`)
+        .style('display', 'block')
+        .style('margin', 'auto');
+
+    // Define soft, eye-friendly colors
+    const nodes = [
+        {
+            id: 'skills',
+            label: 'Use Skills',
+            icon: '🎯',
+            detail: 'Structured Thinking',
+            angle: -90, // Top
+            color: '#9b87c4', // Soft purple
+            gradient: ['#b8a5d6', '#8b75b8']
+        },
+        {
+            id: 'synthesize',
+            label: 'Synthesize',
+            icon: '💡',
+            detail: 'Custom Prompt',
+            angle: 150, // Bottom left
+            color: '#e9a87e', // Soft orange/peach
+            gradient: ['#f4b88f', '#de9870']
+        },
+        {
+            id: 'research',
+            label: 'Deep Research',
+            icon: '📚',
+            detail: 'Generate Output',
+            angle: 30, // Bottom right
+            color: '#6eb5a8', // Soft teal/green
+            gradient: ['#82c4b7', '#5ca699']
+        }
+    ];
+
+    // Calculate positions
+    nodes.forEach(node => {
+        const angleRad = (node.angle * Math.PI) / 180;
+        node.x = centerX + radius * Math.cos(angleRad);
+        node.y = centerY + radius * Math.sin(angleRad);
+    });
+
+    // Create arrow definitions
+    const defs = svg.append('defs');
+
+    // Arrow marker
+    defs.append('marker')
+        .attr('id', 'arrowhead')
+        .attr('viewBox', '0 0 10 10')
+        .attr('refX', 8)
+        .attr('refY', 5)
+        .attr('markerWidth', 6)
+        .attr('markerHeight', 6)
+        .attr('orient', 'auto')
+        .append('path')
+        .attr('d', 'M 0 0 L 10 5 L 0 10 z')
+        .attr('fill', '#999');
+
+    // Draw curved arrows between nodes
+    const arrows = [
+        { from: nodes[0], to: nodes[1] }, // Skills → Synthesize
+        { from: nodes[1], to: nodes[2] }, // Synthesize → Research
+        { from: nodes[2], to: nodes[0] }  // Research → Skills (cycle)
+    ];
+
+    const arrowPaths = arrows.map((arrow, i) => {
+        const dx = arrow.to.x - arrow.from.x;
+        const dy = arrow.to.y - arrow.from.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+
+        // Control point for curved path (offset perpendicular to line)
+        const midX = (arrow.from.x + arrow.to.x) / 2;
+        const midY = (arrow.from.y + arrow.to.y) / 2;
+        const offsetX = -dy / dist * 40; // Perpendicular offset
+        const offsetY = dx / dist * 40;
+        const controlX = midX + offsetX;
+        const controlY = midY + offsetY;
+
+        // Shorten the path to not overlap with circles
+        const nodeRadius = 60;
+        const fromAngle = Math.atan2(dy, dx);
+        const toAngle = Math.atan2(dy, dx);
+
+        const fromX = arrow.from.x + Math.cos(fromAngle) * nodeRadius;
+        const fromY = arrow.from.y + Math.sin(fromAngle) * nodeRadius;
+        const toX = arrow.to.x - Math.cos(toAngle) * nodeRadius;
+        const toY = arrow.to.y - Math.sin(toAngle) * nodeRadius;
+
+        const path = `M ${fromX} ${fromY} Q ${controlX} ${controlY} ${toX} ${toY}`;
+
+        const pathElement = svg.append('path')
+            .attr('d', path)
+            .attr('stroke', '#bbb')
+            .attr('stroke-width', 3)
+            .attr('fill', 'none')
+            .attr('marker-end', 'url(#arrowhead)')
+            .attr('opacity', 0);
+
+        const pathLength = pathElement.node().getTotalLength();
+        pathElement
+            .attr('stroke-dasharray', pathLength)
+            .attr('stroke-dashoffset', pathLength);
+
+        return { element: pathElement, length: pathLength, delay: i * 600 + 800 };
+    });
+
+    // Draw nodes
+    const nodeGroups = nodes.map((node, i) => {
+        const g = svg.append('g')
+            .attr('transform', `translate(${node.x}, ${node.y})`)
+            .style('opacity', 0);
+
+        // Circle with gradient
+        const gradientId = `gradient-${node.id}`;
+        defs.append('linearGradient')
+            .attr('id', gradientId)
+            .attr('x1', '0%')
+            .attr('y1', '0%')
+            .attr('x2', '100%')
+            .attr('y2', '100%')
+            .selectAll('stop')
+            .data([
+                { offset: '0%', color: node.gradient[0] },
+                { offset: '100%', color: node.gradient[1] }
+            ])
+            .join('stop')
+            .attr('offset', d => d.offset)
+            .attr('stop-color', d => d.color);
+
+        g.append('circle')
+            .attr('r', 55)
+            .attr('fill', `url(#${gradientId})`)
+            .attr('stroke', 'white')
+            .attr('stroke-width', 3)
+            .style('filter', 'drop-shadow(0 4px 8px rgba(0,0,0,0.15))');
+
+        // Icon
+        g.append('text')
+            .attr('text-anchor', 'middle')
+            .attr('dy', '-0.3em')
+            .attr('font-size', '32px')
+            .text(node.icon);
+
+        // Label
+        g.append('text')
+            .attr('text-anchor', 'middle')
+            .attr('dy', '2em')
+            .attr('font-size', '14px')
+            .attr('font-weight', '600')
+            .attr('fill', '#333')
+            .text(node.label);
+
+        // Detail
+        g.append('text')
+            .attr('text-anchor', 'middle')
+            .attr('dy', '3.3em')
+            .attr('font-size', '11px')
+            .attr('fill', '#666')
+            .text(node.detail);
+
+        return { group: g, delay: i * 300 };
+    });
+
+    // Animate nodes appearing
+    nodeGroups.forEach(({ group, delay }) => {
+        setTimeout(() => {
+            group.transition()
+                .duration(600)
+                .ease(d3.easeBackOut)
+                .style('opacity', 1)
+                .attr('transform', function() {
+                    const currentTransform = d3.select(this).attr('transform');
+                    return currentTransform;
+                });
+        }, delay);
+    });
+
+    // Animate arrows drawing
+    arrowPaths.forEach(({ element, delay }) => {
+        setTimeout(() => {
+            element.transition()
+                .duration(800)
+                .ease(d3.easeCubicInOut)
+                .attr('stroke-dashoffset', 0)
+                .attr('opacity', 1);
+        }, delay);
+    });
+
+    // Add traveling pulse effect
+    const pulse = svg.append('circle')
+        .attr('r', 8)
+        .attr('fill', '#3498db')
+        .attr('opacity', 0)
+        .style('filter', 'drop-shadow(0 0 4px rgba(52, 152, 219, 0.8))');
+
+    // Animate pulse traveling around the cycle
+    setTimeout(() => {
+        animatePulseAroundCycle(pulse, arrowPaths, 0);
+    }, 2800);
+}
+
+/**
+ * Animate a pulse traveling around the cycle continuously
+ */
+function animatePulseAroundCycle(pulse, arrowPaths, currentPath) {
+    if (currentPath >= arrowPaths.length) {
+        currentPath = 0;
+    }
+
+    const pathElement = arrowPaths[currentPath].element;
+    const pathNode = pathElement.node();
+    const pathLength = pathNode.getTotalLength();
+
+    pulse.attr('opacity', 1);
+
+    pulse.transition()
+        .duration(1200)
+        .ease(d3.easeLinear)
+        .attrTween('transform', () => {
+            return (t) => {
+                const point = pathNode.getPointAtLength(t * pathLength);
+                return `translate(${point.x}, ${point.y})`;
+            };
+        })
+        .on('end', () => {
+            // Continue to next path
+            animatePulseAroundCycle(pulse, arrowPaths, currentPath + 1);
+        });
+}
 
 /**
  * Render the meta-example showing Fermi techniques
