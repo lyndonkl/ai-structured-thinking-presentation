@@ -43,25 +43,24 @@ function addExample2Steps() {
             content: `
                 <div class="prompt-box simple">
                     <h3>Simple query:</h3>
-                    <p>"How do I migrate from Redis to PostgreSQL?"</p>
+                    <p>"I need to migrate our production API from Redis to PostgreSQL. Can you create a migration plan with steps and timeline?"</p>
                 </div>
                 <div class="generic-response">
-                    <h4>PostgreSQL Migration Steps:</h4>
+                    <h4>PostgreSQL Migration Plan:</h4>
+                    <p><strong>Timeline: 6-8 weeks</strong></p>
                     <ol>
-                        <li>Assess current architecture and data model</li>
-                        <li>Design new PostgreSQL schema</li>
-                        <li>Set up PostgreSQL instance</li>
-                        <li>Create data migration scripts</li>
-                        <li>Test migration in staging environment</li>
-                        <li>Plan cutover window</li>
-                        <li>Execute migration</li>
-                        <li>Validate data integrity</li>
-                        <li>Monitor performance</li>
-                        <li>Decommission old system</li>
+                        <li>Week 1-2: Assess current architecture and design new PostgreSQL schema</li>
+                        <li>Week 2-3: Set up PostgreSQL instance and configure replication</li>
+                        <li>Week 3-4: Create data migration scripts and test data transformation</li>
+                        <li>Week 4-5: Test migration in staging environment, validate data integrity</li>
+                        <li>Week 5-6: Performance testing and optimization</li>
+                        <li>Week 6-7: Plan cutover window and rollback procedures</li>
+                        <li>Week 7: Execute production migration during low-traffic window</li>
+                        <li>Week 8: Post-migration monitoring and decommission Redis</li>
                     </ol>
-                    <p><strong>Best practices:</strong> Backup data, test thoroughly, plan for rollback, monitor closely</p>
+                    <p><strong>Best practices:</strong> Backup data before migration, test thoroughly in staging, plan for rollback, monitor performance closely after cutover</p>
                 </div>
-                <p class="explanation">Generic checklist. No risk analysis. No metrics. Could come from any blog post.</p>
+                <p class="explanation">Generic timeline and steps. No risk analysis. No context about your system scale, criticality, or team. Missing success metrics and what could go wrong.</p>
             `
         },
         {
