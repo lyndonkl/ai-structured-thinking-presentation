@@ -127,7 +127,7 @@ function renderWorkflowCycle(container) {
         const controlY = midY + offsetY;
 
         // Shorten the path to not overlap with circles
-        const nodeRadius = 60;
+        const nodeRadius = 80;
         const fromAngle = Math.atan2(dy, dx);
         const toAngle = Math.atan2(dy, dx);
 
@@ -178,7 +178,7 @@ function renderWorkflowCycle(container) {
             .attr('stop-color', d => d.color);
 
         g.append('circle')
-            .attr('r', 55)
+            .attr('r', 75)
             .attr('fill', `url(#${gradientId})`)
             .attr('stroke', 'white')
             .attr('stroke-width', 3)
@@ -187,15 +187,15 @@ function renderWorkflowCycle(container) {
         // Icon
         g.append('text')
             .attr('text-anchor', 'middle')
-            .attr('dy', '-0.5em')
-            .attr('font-size', '28px')
+            .attr('dy', '-0.8em')
+            .attr('font-size', '32px')
             .text(node.icon);
 
         // Label
         g.append('text')
             .attr('text-anchor', 'middle')
-            .attr('dy', '1.5em')
-            .attr('font-size', '13px')
+            .attr('dy', '1.3em')
+            .attr('font-size', '14px')
             .attr('font-weight', '600')
             .attr('fill', '#2c3e50')
             .text(node.label);
@@ -203,8 +203,8 @@ function renderWorkflowCycle(container) {
         // Detail
         g.append('text')
             .attr('text-anchor', 'middle')
-            .attr('dy', '2.7em')
-            .attr('font-size', '10px')
+            .attr('dy', '2.8em')
+            .attr('font-size', '11px')
             .attr('fill', '#34495e')
             .text(node.detail);
 
