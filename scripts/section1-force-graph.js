@@ -367,7 +367,13 @@ window.updateForceGraph = function(step, direction) {
             resetGraph();
             break;
         case 'simple-prompt':
-            highlightSingleCluster('market-analysis');
+            // For simple query about SAM, sample only relevant market analysis concepts
+            highlightSampledNodes('market-analysis', [
+                'TAM SAM SOM',
+                'Market sizing',
+                'Addressable market',
+                'Market research'
+            ], 0.6); // Sample 60% of relevant nodes
             break;
         case 'structured-prompt':
             highlightSubgraphsWithInteractions();
@@ -454,6 +460,56 @@ function highlightSingleCluster(clusterId) {
         .attr('opacity', 0.6)
         .attr('stroke', '#e74c3c')
         .attr('stroke-width', 4);
+}
+
+/**
+ * Highlight sampled nodes based on relevant concepts within a cluster
+ */
+function highlightSampledNodes(clusterId, relevantConcepts, samplingRate = 0.5) {
+    if (!window.graphSelections) return;
+
+    const { nodes, links, labels, boxes } = window.graphSelections;
+
+    // Get all nodes in the cluster with relevant concepts
+    const clusterNodes = graphData.nodes.filter(d => d.cluster === clusterId);
+    const relevantNodes = clusterNodes.filter(d =>
+        relevantConcepts.some(concept => d.concept.includes(concept))
+    );
+
+    // Randomly sample from relevant nodes
+    const sampledNodes = relevantNodes.filter(() => Math.random() < samplingRate);
+    const sampledNodeIds = new Set(sampledNodes.map(d => d.id));
+
+    // Dim all nodes first, then highlight only sampled relevant nodes
+    nodes
+        .transition()
+        .duration(800)
+        .attr('opacity', d => sampledNodeIds.has(d.id) ? 1 : 0.1)
+        .attr('r', d => sampledNodeIds.has(d.id) ? d.radius * 2 : d.radius)
+        .attr('fill', d => sampledNodeIds.has(d.id) ? '#e74c3c' : d.clusterColor)
+        .attr('stroke-width', d => sampledNodeIds.has(d.id) ? 2 : 1);
+
+    // Dim all links
+    links
+        .transition()
+        .duration(800)
+        .attr('stroke-opacity', 0.05);
+
+    // Highlight cluster label (keep others visible)
+    labels
+        .transition()
+        .duration(800)
+        .attr('class', d => d.id === clusterId ? 'cluster-label active' : 'cluster-label')
+        .attr('opacity', d => d.id === clusterId ? 1 : 0.7);
+
+    // Show highlight box around the cluster (more subtle)
+    boxes
+        .filter(d => d.id === clusterId)
+        .transition()
+        .duration(800)
+        .attr('opacity', 0.3)
+        .attr('stroke', '#e74c3c')
+        .attr('stroke-width', 2);
 }
 
 /**
