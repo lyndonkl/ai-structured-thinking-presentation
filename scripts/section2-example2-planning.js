@@ -68,9 +68,27 @@ function addExample2Steps() {
             content: `
                 <div class="prompt-box structured">
                     <h3>Structured query:</h3>
-                    <p>"I want to migrate an existing API from using Redis cache as primary data store to PostgreSQL. Plan this migration with risk analysis and success metrics."</p>
+                    <div style="font-size: 0.95rem; line-height: 1.7;">
+                        <p style="margin-bottom: 0.75rem;"><strong># Role:</strong> Technical Project Planner using Spec + Risk + Metrics Framework</p>
+
+                        <p style="margin-bottom: 0.75rem;"><strong>## Context:</strong><br>
+                        We're migrating our production API from using Redis as the primary data store to PostgreSQL. This API currently handles user sessions, caching, and some transactional data. The migration needs to happen with minimal downtime and no data loss.</p>
+
+                        <p style="margin-bottom: 0.75rem;"><strong>## Task:</strong><br>
+                        Create a comprehensive migration plan that includes detailed specifications, proactive risk identification with mitigation strategies, and measurable success criteria.</p>
+
+                        <p style="margin-bottom: 0.75rem;"><strong>## Method Requirements:</strong></p>
+                        <ul style="margin-left: 1.5rem; margin-bottom: 0.75rem; line-height: 1.6;">
+                            <li><strong>Specification:</strong> Define migration approach, timeline, phases, dependencies, rollback strategy</li>
+                            <li><strong>Risk Analysis:</strong> Conduct premortem ("imagine this migration failed - why?"), create risk register with likelihood, impact, mitigation, owners</li>
+                            <li><strong>Success Metrics:</strong> Define leading indicators, lagging indicators, counter-metrics with baseline and target values</li>
+                        </ul>
+
+                        <p style="margin-bottom: 0;"><strong>## Output Format:</strong><br>
+                        Deliver integrated plan with all three components: clear spec showing what/how/when, comprehensive risks with mitigations, and measurable metrics to track success.</p>
+                    </div>
                 </div>
-                <p class="explanation">Not just "how to migrate" but "plan with risk analysis and metrics" - asking for comprehensive thinking.</p>
+                <p class="explanation">A structured prompt invokes a specific methodology (Spec + Risk + Metrics framework) and defines what comprehensive planning looks like. The skill will ask clarifying questions before generating the plan.</p>
             `
         },
         {
