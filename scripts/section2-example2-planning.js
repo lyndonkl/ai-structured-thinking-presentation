@@ -216,8 +216,8 @@ function renderContextCards(container) {
         // Animate card appearing
         setTimeout(() => {
             card.transition()
-                .delay(i * 100)
-                .duration(400)
+                .delay(i * 200)
+                .duration(600)
                 .ease(d3.easeBackOut)
                 .style('opacity', 1)
                 .style('transform', 'scale(1) translateY(0)');
@@ -266,8 +266,8 @@ function renderTimeline(container) {
         // Animate phase appearing
         setTimeout(() => {
             phaseDiv.transition()
-                .delay(i * 200)
-                .duration(400)
+                .delay(i * 350)
+                .duration(600)
                 .ease(d3.easeCubicOut)
                 .style('opacity', 1)
                 .style('transform', 'translateX(0)');
@@ -325,8 +325,8 @@ function renderRiskHeatmap(container) {
         // Animate risk appearing
         setTimeout(() => {
             riskDiv.transition()
-                .delay(i * 150)
-                .duration(400)
+                .delay(i * 300)
+                .duration(600)
                 .ease(d3.easeBackOut)
                 .style('opacity', 1)
                 .style('transform', 'translateY(0)');
@@ -397,8 +397,8 @@ function renderMetrics(container) {
         // Animate section appearing
         setTimeout(() => {
             sectionDiv.transition()
-                .delay(i * 200)
-                .duration(400)
+                .delay(i * 350)
+                .duration(600)
                 .ease(d3.easeCubicOut)
                 .style('opacity', 1)
                 .style('transform', 'translateX(0)');
