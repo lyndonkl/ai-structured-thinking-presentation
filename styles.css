@@ -134,14 +134,14 @@ a:hover {
 }
 
 #section1 .scroll-graphic {
-    flex: 0 0 60%; /* Graph takes 60% on left */
+    flex: 0 0 50%; /* Graph takes 50% on left - consistent with examples */
     position: sticky;
     top: 0;
     height: 100vh;
 }
 
 #section1 .scroll-text {
-    flex: 0 0 40%; /* Text takes 40% on right */
+    flex: 0 0 50%; /* Text takes 50% on right - consistent with examples */
     position: relative;
     background: rgba(255, 255, 255, 0.95);
     padding: var(--spacing-lg);
@@ -346,14 +346,35 @@ a:hover {
 
 #section3 {
     background: #f8f9fa; /* Light neutral background */
+    display: flex;
+    flex-direction: row;
 }
 
 #section3 .scroll-graphic {
+    flex: 0 0 50%; /* Consistent with examples */
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     background: #2c3e50; /* Consistent with examples */
 }
 
 #section3 .scroll-text {
+    flex: 0 0 50%; /* Consistent with examples */
+    position: relative;
     background: #ffffff;
+    padding: var(--spacing-lg);
+}
+
+#section3 .step {
+    padding: var(--spacing-lg);
+}
+
+#section3 .narrative-overlay {
+    background: white;
+    padding: var(--spacing-md);
 }
 
 .workflow-diagram {
