@@ -187,25 +187,25 @@ function renderWorkflowCycle(container) {
         // Icon
         g.append('text')
             .attr('text-anchor', 'middle')
-            .attr('dy', '-0.3em')
-            .attr('font-size', '32px')
+            .attr('dy', '-0.5em')
+            .attr('font-size', '28px')
             .text(node.icon);
 
         // Label
         g.append('text')
             .attr('text-anchor', 'middle')
-            .attr('dy', '2em')
-            .attr('font-size', '14px')
+            .attr('dy', '1.5em')
+            .attr('font-size', '13px')
             .attr('font-weight', '600')
-            .attr('fill', '#333')
+            .attr('fill', '#2c3e50')
             .text(node.label);
 
         // Detail
         g.append('text')
             .attr('text-anchor', 'middle')
-            .attr('dy', '3.3em')
-            .attr('font-size', '11px')
-            .attr('fill', '#666')
+            .attr('dy', '2.7em')
+            .attr('font-size', '10px')
+            .attr('fill', '#34495e')
             .text(node.detail);
 
         return { group: g, delay: i * 300 };
