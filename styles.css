@@ -134,14 +134,14 @@ a:hover {
 }
 
 #section1 .scroll-graphic {
-    flex: 0 0 50%; /* Graph takes 50% on left - consistent with examples */
+    flex: 0 0 60%; /* Graph takes 60% on left for better visibility */
     position: sticky;
     top: 0;
     height: 100vh;
 }
 
 #section1 .scroll-text {
-    flex: 0 0 50%; /* Text takes 50% on right - consistent with examples */
+    flex: 0 0 40%; /* Text takes 40% on right */
     position: relative;
     background: rgba(255, 255, 255, 0.95);
     padding: var(--spacing-lg);
@@ -219,7 +219,7 @@ a:hover {
 }
 
 .example-container .scroll-graphic {
-    flex: 0 0 50%; /* Take up 50% of width */
+    flex: 0 0 60%; /* Take up 60% of width for better visualization space */
     position: sticky;
     top: 0;
     height: 100vh;
@@ -230,7 +230,7 @@ a:hover {
 }
 
 .example-container .scroll-text {
-    flex: 0 0 50%; /* Take up 50% of width */
+    flex: 0 0 40%; /* Take up 40% of width */
     position: relative;
     z-index: 10;
     background: #ffffff; /* White background for text */
@@ -351,7 +351,7 @@ a:hover {
 }
 
 #section3 .scroll-graphic {
-    flex: 0 0 50%; /* Consistent with examples */
+    flex: 0 0 60%; /* 60% width for visualization area */
     position: sticky;
     top: 0;
     height: 100vh;
@@ -362,7 +362,7 @@ a:hover {
 }
 
 #section3 .scroll-text {
-    flex: 0 0 50%; /* Consistent with examples */
+    flex: 0 0 40%; /* 40% width for text area */
     position: relative;
     background: #ffffff;
     padding: var(--spacing-lg);
