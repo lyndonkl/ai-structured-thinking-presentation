@@ -12,6 +12,7 @@ let labelGroup;
 let highlightBoxGroup;
 let currentStep = 'intro';
 let activeAnimations = []; // Track active animations to cancel them
+let tooltip; // Tooltip for node hover labels
 
 // Initialize the force-directed graph
 async function initForceGraph() {
@@ -26,6 +27,9 @@ async function initForceGraph() {
 
     // Set up SVG
     setupSVG();
+
+    // Create tooltip for node hover
+    createTooltip();
 
     // Create force simulation
     createForceSimulation(clusterData);
@@ -123,20 +127,43 @@ function generateLinks() {
  */
 function setupSVG() {
     const container = d3.select('#force-graph');
-    const width = window.innerWidth;
-    const height = window.innerHeight;
+    // Use the left column container dimensions instead of full viewport
+    const graphContainer = document.querySelector('#graph-container');
+    const width = graphContainer.clientWidth;
+    const height = graphContainer.clientHeight;
 
     svg = container
         .attr('width', width)
         .attr('height', height);
 
     // Create groups for layering (order matters - drawn bottom to top)
+    // Center within the left column
     const mainGroup = svg.append('g').attr('transform', `translate(${width / 2}, ${height / 2})`);
 
     highlightBoxGroup = mainGroup.append('g').attr('class', 'highlight-boxes');
     linkGroup = mainGroup.append('g').attr('class', 'links');
     nodeGroup = mainGroup.append('g').attr('class', 'nodes');
     labelGroup = mainGroup.append('g').attr('class', 'labels');
+}
+
+/**
+ * Create tooltip for node hover
+ */
+function createTooltip() {
+    // Create tooltip div if it doesn't exist
+    tooltip = d3.select('body').append('div')
+        .attr('class', 'node-tooltip')
+        .style('position', 'absolute')
+        .style('visibility', 'hidden')
+        .style('background-color', 'rgba(0, 0, 0, 0.85)')
+        .style('color', 'white')
+        .style('padding', '8px 12px')
+        .style('border-radius', '6px')
+        .style('font-size', '14px')
+        .style('font-weight', '500')
+        .style('pointer-events', 'none')
+        .style('z-index', '1000')
+        .style('box-shadow', '0 2px 8px rgba(0,0,0,0.3)');
 }
 
 /**
@@ -198,6 +225,7 @@ function render() {
         .attr('stroke-width', 1)
         .attr('opacity', 0.5)
         .on('mouseover', handleNodeHover)
+        .on('mousemove', handleNodeMove)
         .on('mouseout', handleNodeOut);
 
     // Get unique clusters and their positions
@@ -263,24 +291,45 @@ function updatePositions() {
  * Handle node hover
  */
 function handleNodeHover(event, d) {
+    // Existing behavior: enlarge and highlight node
     d3.select(event.target)
         .transition()
         .duration(200)
         .attr('r', d.radius * 1.5)
         .attr('opacity', 1)
         .attr('stroke-width', 2);
+
+    // New behavior: show tooltip with concept name
+    tooltip
+        .style('visibility', 'visible')
+        .text(d.concept)
+        .style('left', (event.pageX + 10) + 'px')
+        .style('top', (event.pageY - 10) + 'px');
+}
+
+/**
+ * Handle node mousemove - update tooltip position
+ */
+function handleNodeMove(event, d) {
+    tooltip
+        .style('left', (event.pageX + 10) + 'px')
+        .style('top', (event.pageY - 10) + 'px');
 }
 
 /**
  * Handle node mouseout
  */
 function handleNodeOut(event, d) {
+    // Existing behavior: restore node to original size
     d3.select(event.target)
         .transition()
         .duration(200)
         .attr('r', d.radius)
         .attr('opacity', 0.5)
         .attr('stroke-width', 1);
+
+    // New behavior: hide tooltip
+    tooltip.style('visibility', 'hidden');
 }
 
 /**
