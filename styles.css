@@ -138,6 +138,9 @@ a:hover {
     position: sticky;
     top: 0;
     height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 #section1 .scroll-text {
@@ -150,6 +153,23 @@ a:hover {
 #force-graph {
     width: 100%;
     height: 100%;
+}
+
+/* Node hover tooltip */
+.node-tooltip {
+    position: absolute;
+    visibility: hidden;
+    background-color: rgba(0, 0, 0, 0.85);
+    color: white;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    pointer-events: none;
+    z-index: 1000;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    white-space: nowrap;
+    transition: opacity 0.2s ease;
 }
 
 .narrative-overlay {

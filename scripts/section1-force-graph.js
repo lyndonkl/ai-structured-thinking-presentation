@@ -12,6 +12,7 @@ let labelGroup;
 let highlightBoxGroup;
 let currentStep = 'intro';
 let activeAnimations = []; // Track active animations to cancel them
+let tooltip; // Tooltip for node hover labels
 
 // Initialize the force-directed graph
 async function initForceGraph() {
@@ -26,6 +27,9 @@ async function initForceGraph() {
 
     // Set up SVG
     setupSVG();
+
+    // Create tooltip for node hover
+    createTooltip();
 
     // Create force simulation
     createForceSimulation(clusterData);
@@ -123,20 +127,43 @@ function generateLinks() {
  */
 function setupSVG() {
     const container = d3.select('#force-graph');
-    const width = window.innerWidth;
-    const height = window.innerHeight;
+    // Use the left column container dimensions instead of full viewport
+    const graphContainer = document.querySelector('#graph-container');
+    const width = graphContainer.clientWidth;
+    const height = graphContainer.clientHeight;
 
     svg = container
         .attr('width', width)
         .attr('height', height);
 
     // Create groups for layering (order matters - drawn bottom to top)
+    // Center within the left column
     const mainGroup = svg.append('g').attr('transform', `translate(${width / 2}, ${height / 2})`);
 
     highlightBoxGroup = mainGroup.append('g').attr('class', 'highlight-boxes');
     linkGroup = mainGroup.append('g').attr('class', 'links');
     nodeGroup = mainGroup.append('g').attr('class', 'nodes');
     labelGroup = mainGroup.append('g').attr('class', 'labels');
+}
+
+/**
+ * Create tooltip for node hover
+ */
+function createTooltip() {
+    // Create tooltip div if it doesn't exist
+    tooltip = d3.select('body').append('div')
+        .attr('class', 'node-tooltip')
+        .style('position', 'absolute')
+        .style('visibility', 'hidden')
+        .style('background-color', 'rgba(0, 0, 0, 0.85)')
+        .style('color', 'white')
+        .style('padding', '8px 12px')
+        .style('border-radius', '6px')
+        .style('font-size', '14px')
+        .style('font-weight', '500')
+        .style('pointer-events', 'none')
+        .style('z-index', '1000')
+        .style('box-shadow', '0 2px 8px rgba(0,0,0,0.3)');
 }
 
 /**
@@ -198,6 +225,7 @@ function render() {
         .attr('stroke-width', 1)
         .attr('opacity', 0.5)
         .on('mouseover', handleNodeHover)
+        .on('mousemove', handleNodeMove)
         .on('mouseout', handleNodeOut);
 
     // Get unique clusters and their positions
@@ -263,24 +291,45 @@ function updatePositions() {
  * Handle node hover
  */
 function handleNodeHover(event, d) {
+    // Existing behavior: enlarge and highlight node
     d3.select(event.target)
         .transition()
         .duration(200)
         .attr('r', d.radius * 1.5)
         .attr('opacity', 1)
         .attr('stroke-width', 2);
+
+    // New behavior: show tooltip with concept name
+    tooltip
+        .style('visibility', 'visible')
+        .text(d.concept)
+        .style('left', (event.pageX + 10) + 'px')
+        .style('top', (event.pageY - 10) + 'px');
+}
+
+/**
+ * Handle node mousemove - update tooltip position
+ */
+function handleNodeMove(event, d) {
+    tooltip
+        .style('left', (event.pageX + 10) + 'px')
+        .style('top', (event.pageY - 10) + 'px');
 }
 
 /**
  * Handle node mouseout
  */
 function handleNodeOut(event, d) {
+    // Existing behavior: restore node to original size
     d3.select(event.target)
         .transition()
         .duration(200)
         .attr('r', d.radius)
         .attr('opacity', 0.5)
         .attr('stroke-width', 1);
+
+    // New behavior: hide tooltip
+    tooltip.style('visibility', 'hidden');
 }
 
 /**
@@ -318,7 +367,28 @@ window.updateForceGraph = function(step, direction) {
             resetGraph();
             break;
         case 'simple-prompt':
-            highlightSingleCluster('market-analysis');
+            // For simple query about SAM, sample only relevant market analysis concepts
+            highlightSampledNodes('market-analysis', [
+                'TAM SAM SOM',
+                'Market sizing',
+                'Addressable market',
+                'Market research',
+                'Market opportunity',
+                'Category size',
+                'Market share',
+                'Market penetration',
+                'Target market',
+                'Market segmentation',
+                'Customer segments',
+                'Market trends',
+                'Industry analysis',
+                'Competitive analysis',
+                'Market maturity',
+                'Market growth',
+                'Market positioning',
+                'Market coverage',
+                'Market intelligence'
+            ], 0.8); // Sample 80% of relevant nodes
             break;
         case 'structured-prompt':
             highlightSubgraphsWithInteractions();
@@ -405,6 +475,56 @@ function highlightSingleCluster(clusterId) {
         .attr('opacity', 0.6)
         .attr('stroke', '#e74c3c')
         .attr('stroke-width', 4);
+}
+
+/**
+ * Highlight sampled nodes based on relevant concepts within a cluster
+ */
+function highlightSampledNodes(clusterId, relevantConcepts, samplingRate = 0.5) {
+    if (!window.graphSelections) return;
+
+    const { nodes, links, labels, boxes } = window.graphSelections;
+
+    // Get all nodes in the cluster with relevant concepts
+    const clusterNodes = graphData.nodes.filter(d => d.cluster === clusterId);
+    const relevantNodes = clusterNodes.filter(d =>
+        relevantConcepts.some(concept => d.concept.includes(concept))
+    );
+
+    // Randomly sample from relevant nodes
+    const sampledNodes = relevantNodes.filter(() => Math.random() < samplingRate);
+    const sampledNodeIds = new Set(sampledNodes.map(d => d.id));
+
+    // Dim all nodes first, then highlight only sampled relevant nodes
+    nodes
+        .transition()
+        .duration(800)
+        .attr('opacity', d => sampledNodeIds.has(d.id) ? 1 : 0.1)
+        .attr('r', d => sampledNodeIds.has(d.id) ? d.radius * 2 : d.radius)
+        .attr('fill', d => sampledNodeIds.has(d.id) ? '#e74c3c' : d.clusterColor)
+        .attr('stroke-width', d => sampledNodeIds.has(d.id) ? 2 : 1);
+
+    // Dim all links
+    links
+        .transition()
+        .duration(800)
+        .attr('stroke-opacity', 0.05);
+
+    // Highlight cluster label (keep others visible)
+    labels
+        .transition()
+        .duration(800)
+        .attr('class', d => d.id === clusterId ? 'cluster-label active' : 'cluster-label')
+        .attr('opacity', d => d.id === clusterId ? 1 : 0.7);
+
+    // Show highlight box around the cluster (more subtle)
+    boxes
+        .filter(d => d.id === clusterId)
+        .transition()
+        .duration(800)
+        .attr('opacity', 0.3)
+        .attr('stroke', '#e74c3c')
+        .attr('stroke-width', 2);
 }
 
 /**
@@ -526,53 +646,120 @@ function highlightSubgraphsWithInteractions() {
     boxes
         .attr('opacity', 0);
 
-    // Define meaningful subgraphs that show framework interactions
+    // Define meaningful subgraphs with relevant concepts for the structured query
     const subgraphs = [
         {
             clusters: ['estimation-techniques', 'market-analysis'],
             color: '#9b59b6',
             delay: 0,
-            label: 'Core Framework'
+            label: 'Core Framework',
+            relevantConcepts: {
+                'estimation-techniques': [
+                    'Fermi estimation', 'Decomposition', 'Top-down estimation', 'Bottom-up estimation',
+                    'Triangulation', 'Bounding assumptions', 'Sensitivity analysis', 'Range estimation',
+                    'Optimistic scenario', 'Pessimistic scenario', 'Base case', 'Upper bound', 'Lower bound',
+                    'Conservative estimate', 'Aggressive estimate', 'Order of magnitude', 'Back-of-envelope'
+                ],
+                'market-analysis': [
+                    'TAM SAM SOM', 'Market sizing', 'Addressable market', 'Market opportunity',
+                    'Target market', 'Market segmentation', 'Customer segments', 'Market penetration'
+                ]
+            }
         },
         {
             clusters: ['health-economics', 'demographics'],
             color: '#e67e22',
             delay: 1000,
-            label: 'Domain Knowledge'
+            label: 'Domain Knowledge',
+            relevantConcepts: {
+                'health-economics': [
+                    'Healthcare costs', 'Chronic disease management', 'Preventive care', 'Health behaviors',
+                    'Patient adherence', 'Health outcomes', 'Healthcare utilization', 'Wellness programs',
+                    'Disease prevention', 'Health literacy', 'Patient education', 'Health promotion'
+                ],
+                'demographics': [
+                    'Population size', 'Age distribution', 'US population', 'Adult population',
+                    'Income levels', 'Education levels', 'Target demographics', 'Population growth',
+                    'Generational cohorts', 'Socioeconomic factors', 'Health demographics'
+                ]
+            }
         },
         {
             clusters: ['consumer-behavior', 'subscription-models'],
             color: '#3498db',
             delay: 2000,
-            label: 'Business Logic'
+            label: 'Business Logic',
+            relevantConcepts: {
+                'consumer-behavior': [
+                    'Willingness to pay', 'Purchase intent', 'Price sensitivity', 'Value perception',
+                    'Consumer psychology', 'Decision making', 'Pain points', 'User needs',
+                    'Trust factors', 'Perceived value', 'Quality perception', 'Premium positioning'
+                ],
+                'subscription-models': [
+                    'Subscription pricing', 'Pricing tiers', 'Price point', 'Monthly recurring revenue',
+                    'Willingness to pay', 'Premium features', 'Price optimization', 'Revenue per user',
+                    'Pricing strategy', 'Value-based pricing', 'Tiered pricing', 'Premium subscription'
+                ]
+            }
         },
         {
             clusters: ['data-analysis', 'digital-media'],
             color: '#27ae60',
             delay: 3000,
-            label: 'Measurement & Analytics'
+            label: 'Measurement & Analytics',
+            relevantConcepts: {
+                'data-analysis': [
+                    'Statistical analysis', 'Data modeling', 'Trend analysis', 'Market sizing',
+                    'Segmentation', 'Bottom-up analysis', 'Top-down analysis', 'Triangulation'
+                ],
+                'digital-media': [
+                    'Digital health', 'Content consumption', 'Health content', 'Digital engagement',
+                    'Online behavior', 'Content marketing', 'User retention', 'Newsletter',
+                    'Email engagement', 'Content strategy', 'Digital channels', 'Health information'
+                ]
+            }
         },
         {
             clusters: ['business-strategy'],
             color: '#e74c3c',
             delay: 4000,
-            label: 'Strategic Integration'
+            label: 'Strategic Integration',
+            relevantConcepts: {
+                'business-strategy': [
+                    'Market sizing', 'TAM SAM SOM', 'Unit economics', 'Revenue model',
+                    'Business viability', 'Market opportunity', 'Strategic planning', 'Growth strategy',
+                    'Market analysis', 'Key drivers', 'Value drivers', 'Strategic assumptions'
+                ]
+            }
         }
     ];
 
     let allActiveClusters = [];
 
-    // Highlight each subgraph sequentially
+    // Highlight each subgraph sequentially with sampled relevant nodes
     subgraphs.forEach((subgraph, subgraphIndex) => {
-        const { clusters, color, delay } = subgraph;
+        const { clusters, color, delay, relevantConcepts } = subgraph;
 
         // Add to active clusters list
         allActiveClusters = [...allActiveClusters, ...clusters];
 
-        // Highlight nodes in this subgraph
+        // Highlight sampled relevant nodes in this subgraph
         clusters.forEach(clusterId => {
+            const clusterRelevantConcepts = relevantConcepts[clusterId] || [];
+
+            // Get all nodes in this cluster with relevant concepts
+            const clusterNodes = graphData.nodes.filter(d => d.cluster === clusterId);
+            const relevantNodes = clusterNodes.filter(d =>
+                clusterRelevantConcepts.some(concept => d.concept.includes(concept) || concept.includes(d.concept))
+            );
+
+            // Sample 70% of relevant nodes for variation
+            const sampledNodes = relevantNodes.filter(() => Math.random() < 0.7);
+            const sampledNodeIds = new Set(sampledNodes.map(d => d.id));
+
+            // Highlight sampled nodes
             nodes
-                .filter(d => d.cluster === clusterId)
+                .filter(d => sampledNodeIds.has(d.id))
                 .transition()
                 .delay(delay)
                 .duration(600)
