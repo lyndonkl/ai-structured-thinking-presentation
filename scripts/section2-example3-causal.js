@@ -167,8 +167,21 @@ function handleExample3StepEnter(response) {
 
     switch (step) {
         case 'generic-calculator':
+            viz.html(`
+                <div style="color: white; font-size: 1.5rem; text-align: center; padding: 2rem; max-width: 400px;">
+                    <p style="margin-bottom: 1rem;">📊</p>
+                    <p>Generic calculators assume you know what to test</p>
+                </div>
+            `);
+            break;
+
         case 'structured-query':
-            viz.html(''); // No visualization for these steps
+            viz.html(`
+                <div style="color: white; font-size: 1.5rem; text-align: center; padding: 2rem; max-width: 400px;">
+                    <p style="margin-bottom: 1rem;">🔍</p>
+                    <p>Asking for causal inference to identify WHY drop-offs occur</p>
+                </div>
+            `);
             break;
         case 'data-pattern':
             renderBarChart(viz);
@@ -194,7 +207,9 @@ function renderBarChart(container) {
     const svg = container.append('svg')
         .attr('width', width)
         .attr('height', height)
-        .style('background', '#fff');
+        .style('background', '#ffffff')
+        .style('border-radius', '12px')
+        .style('box-shadow', '0 4px 20px rgba(0,0,0,0.3)');
 
     const data = [
         { label: 'Diabetes pages', value: 25, color: '#e74c3c' },
@@ -256,7 +271,9 @@ function renderCausalDAG(container) {
     const svg = container.append('svg')
         .attr('width', width)
         .attr('height', height)
-        .style('background', '#fff');
+        .style('background', '#ffffff')
+        .style('border-radius', '12px')
+        .style('box-shadow', '0 4px 20px rgba(0,0,0,0.3)');
 
     // Node positions
     const nodes = [

@@ -226,7 +226,7 @@ a:hover {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #f8f9fa;
+    background: #2c3e50; /* Dark background for better contrast */
 }
 
 .example-container .scroll-text {

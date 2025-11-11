@@ -169,9 +169,30 @@ function handleExample1StepEnter(response) {
 
     switch (step) {
         case 'search-style':
+            viz.html(`
+                <div style="color: white; font-size: 1.5rem; text-align: center; padding: 2rem; max-width: 400px;">
+                    <p style="margin-bottom: 1rem;">👉</p>
+                    <p>Read the simple query and generic response</p>
+                </div>
+            `);
+            break;
+
         case 'structured-query':
+            viz.html(`
+                <div style="color: white; font-size: 1.5rem; text-align: center; padding: 2rem; max-width: 400px;">
+                    <p style="margin-bottom: 1rem;">📋</p>
+                    <p>Notice the difference in how the question is structured</p>
+                </div>
+            `);
+            break;
+
         case 'clarifying-questions':
-            viz.html(''); // Clear - no visualization for these steps
+            viz.html(`
+                <div style="color: white; font-size: 1.5rem; text-align: center; padding: 2rem; max-width: 400px;">
+                    <p style="margin-bottom: 1rem;">❓</p>
+                    <p>The skill asks clarifying questions before analyzing</p>
+                </div>
+            `);
             break;
 
         case 'decomposition':
@@ -201,7 +222,9 @@ function renderFermiTree(container) {
     const svg = container.append('svg')
         .attr('width', width)
         .attr('height', height)
-        .style('background', '#fff');
+        .style('background', '#ffffff')
+        .style('border-radius', '12px')
+        .style('box-shadow', '0 4px 20px rgba(0,0,0,0.3)');
 
     // Tree data
     const treeData = {
@@ -289,7 +312,9 @@ function renderBoundsVisualization(container) {
     const svg = container.append('svg')
         .attr('width', width)
         .attr('height', height)
-        .style('background', '#fff');
+        .style('background', '#ffffff')
+        .style('border-radius', '12px')
+        .style('box-shadow', '0 4px 20px rgba(0,0,0,0.3)');
 
     // Range visualization
     const scale = d3.scaleLinear()

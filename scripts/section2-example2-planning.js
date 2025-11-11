@@ -123,8 +123,21 @@ function handleExample2StepEnter(response) {
 
     switch (step) {
         case 'generic-checklist':
+            viz.html(`
+                <div style="color: white; font-size: 1.5rem; text-align: center; padding: 2rem; max-width: 400px;">
+                    <p style="margin-bottom: 1rem;">📝</p>
+                    <p>Compare the generic checklist with structured planning</p>
+                </div>
+            `);
+            break;
+
         case 'structured-query':
-            viz.html(''); // No visualization for these steps
+            viz.html(`
+                <div style="color: white; font-size: 1.5rem; text-align: center; padding: 2rem; max-width: 400px;">
+                    <p style="margin-bottom: 1rem;">🎯</p>
+                    <p>Notice: asking for risk analysis and metrics, not just steps</p>
+                </div>
+            `);
             break;
         case 'context-gathering':
             renderContextCards(viz);
@@ -146,13 +159,15 @@ function handleExample2StepEnter(response) {
 function renderContextCards(container) {
     container.html('');
     const html = `
-        <div style="display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; padding: 2rem;">
-            <div class="insight-card">500K providers</div>
-            <div class="insight-card">1.2M locations</div>
-            <div class="insight-card">30GB Redis cache</div>
-            <div class="insight-card">15 API endpoints</div>
-            <div class="insight-card">50K req/day</div>
-            <div class="insight-card">6-month timeline</div>
+        <div style="background: white; padding: 3rem; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.3); max-width: 700px;">
+            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem;">
+                <div style="background: #3498db; color: white; padding: 1.5rem; border-radius: 8px; text-align: center; font-size: 1.2rem; font-weight: bold;">500K providers</div>
+                <div style="background: #3498db; color: white; padding: 1.5rem; border-radius: 8px; text-align: center; font-size: 1.2rem; font-weight: bold;">1.2M locations</div>
+                <div style="background: #3498db; color: white; padding: 1.5rem; border-radius: 8px; text-align: center; font-size: 1.2rem; font-weight: bold;">30GB Redis cache</div>
+                <div style="background: #3498db; color: white; padding: 1.5rem; border-radius: 8px; text-align: center; font-size: 1.2rem; font-weight: bold;">15 API endpoints</div>
+                <div style="background: #3498db; color: white; padding: 1.5rem; border-radius: 8px; text-align: center; font-size: 1.2rem; font-weight: bold;">50K req/day</div>
+                <div style="background: #3498db; color: white; padding: 1.5rem; border-radius: 8px; text-align: center; font-size: 1.2rem; font-weight: bold;">6-month timeline</div>
+            </div>
         </div>
     `;
     container.html(html);
@@ -161,7 +176,7 @@ function renderContextCards(container) {
 function renderTimeline(container) {
     container.html('');
     const html = `
-        <div style="padding: 2rem; background: white; border-radius: 12px; max-width: 700px;">
+        <div style="padding: 2rem; background: white; border-radius: 12px; max-width: 700px; box-shadow: 0 4px 20px rgba(0,0,0,0.3);">
             <div style="margin-bottom: 1.5rem;">
                 <h4 style="color: var(--accent-blue);">Month 1-2: Foundation</h4>
                 <ul style="font-size: 0.9rem; margin-left: 1.5rem;">
@@ -199,7 +214,7 @@ function renderTimeline(container) {
 function renderRiskHeatmap(container) {
     container.html('');
     const html = `
-        <div style="padding: 2rem; background: white; border-radius: 12px; max-width: 800px;">
+        <div style="padding: 2rem; background: white; border-radius: 12px; max-width: 800px; box-shadow: 0 4px 20px rgba(0,0,0,0.3);">
             <h4 style="text-align: center; margin-bottom: 1.5rem;">Top Risks & Mitigations</h4>
             <div style="display: grid; gap: 1rem;">
                 <div style="background: #fee; padding: 1rem; border-radius: 8px; border-left: 4px solid var(--accent-red);">
@@ -223,7 +238,7 @@ function renderRiskHeatmap(container) {
 function renderMetrics(container) {
     container.html('');
     const html = `
-        <div style="padding: 2rem; background: white; border-radius: 12px; max-width: 800px;">
+        <div style="padding: 2rem; background: white; border-radius: 12px; max-width: 800px; box-shadow: 0 4px 20px rgba(0,0,0,0.3);">
             <div style="margin-bottom: 2rem;">
                 <h4 style="color: var(--accent-blue);">Leading Indicators</h4>
                 <p style="font-size: 0.9rem;">Schema design complete: 0% → 100% by Week 4</p>
