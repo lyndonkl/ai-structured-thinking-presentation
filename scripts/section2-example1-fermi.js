@@ -341,36 +341,66 @@ function renderBoundsVisualization(container) {
         .domain([0, 60])
         .range([100, width - 150]); // More padding on both sides
 
-    // Draw range line
-    svg.append('line')
+    // Draw range line with growing animation
+    const rangeLine = svg.append('line')
         .attr('x1', scale(4))
         .attr('y1', 100)
-        .attr('x2', scale(60))
+        .attr('x2', scale(4)) // Start at same position as x1
         .attr('y2', 100)
         .attr('stroke', '#999')
         .attr('stroke-width', 4);
 
-    // Add markers
+    // Use setTimeout to ensure DOM is ready before animating
+    setTimeout(() => {
+        // Animate line growing from left to right
+        rangeLine.transition()
+            .duration(600)
+            .ease(d3.easeCubicOut)
+            .attr('x2', scale(60));
+    }, 10);
+
+    // Add markers with sequential animation
     const markers = [
         { value: 4, label: 'Pessimistic: $4M' },
         { value: 19, label: 'Central: $19M' },
         { value: 60, label: 'Optimistic: $60M' }
     ];
 
-    markers.forEach(marker => {
-        svg.append('circle')
+    markers.forEach((marker, i) => {
+        // Add circle (start invisible and small)
+        const circle = svg.append('circle')
             .attr('cx', scale(marker.value))
             .attr('cy', 100)
-            .attr('r', 8)
-            .attr('fill', marker.value === 19 ? '#3498db' : '#f39c12');
+            .attr('r', 0) // Start at radius 0
+            .attr('fill', marker.value === 19 ? '#3498db' : '#f39c12')
+            .attr('opacity', 0); // Start invisible
 
-        svg.append('text')
+        // Add label (start invisible)
+        const label = svg.append('text')
             .attr('x', scale(marker.value))
             .attr('y', 130)
             .attr('text-anchor', 'middle')
             .attr('font-size', '14px')
             .attr('font-weight', 'bold')
+            .attr('opacity', 0) // Start invisible
             .text(marker.label);
+
+        // Animate after DOM is ready
+        setTimeout(() => {
+            // Animate circle appearing and growing
+            circle.transition()
+                .delay(700 + i * 300) // Stagger: 700ms, 1000ms, 1300ms
+                .duration(400)
+                .ease(d3.easeBackOut) // Slight bounce for emphasis
+                .attr('r', 8)
+                .attr('opacity', 1);
+
+            // Animate label fading in
+            label.transition()
+                .delay(700 + i * 300 + 200) // Slightly after circle
+                .duration(300)
+                .attr('opacity', 1);
+        }, 10);
     });
 
     // Sensitivity bars
@@ -386,18 +416,37 @@ function renderBoundsVisualization(container) {
     sensitivity.forEach((item, i) => {
         const y = barY + i * (barHeight + 10);
 
-        svg.append('text')
+        // Add label (start invisible)
+        const label = svg.append('text')
             .attr('x', 50)
             .attr('y', y + barHeight / 2 + 5)
             .attr('font-size', '14px')
+            .attr('opacity', 0)
             .text(item.factor);
 
-        svg.append('rect')
+        // Add bar (start with zero width)
+        const bar = svg.append('rect')
             .attr('x', 250)
             .attr('y', y)
-            .attr('width', item.impact * 50)
+            .attr('width', 0) // Start at width 0
             .attr('height', barHeight)
             .attr('fill', '#3498db')
             .attr('opacity', 0.7);
+
+        // Animate after DOM is ready
+        setTimeout(() => {
+            // Fade in label
+            label.transition()
+                .delay(1800 + i * 200) // Start after markers, stagger each bar
+                .duration(300)
+                .attr('opacity', 1);
+
+            // Animate bar growing from left to right
+            bar.transition()
+                .delay(1800 + i * 200)
+                .duration(500)
+                .ease(d3.easeCubicOut) // Fast start, slow end
+                .attr('width', item.impact * 50);
+        }, 10);
     });
 }
