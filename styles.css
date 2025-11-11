@@ -292,18 +292,27 @@ a:hover {
     align-items: center;
     justify-content: center;
     padding: var(--spacing-lg);
-    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    background: #ffffff; /* Clean white background */
 }
 
 .recap-content {
     max-width: 900px;
     text-align: center;
-    color: var(--text-light);
+    color: var(--text-dark);
+    background: #f8f9fa;
+    padding: var(--spacing-xl);
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
 }
 
 .pattern-summary {
     margin: var(--spacing-lg) 0;
     font-size: 1.25rem;
+}
+
+.pattern-summary p {
+    color: var(--text-dark);
+    font-weight: 600;
 }
 
 .key-insights {
@@ -314,16 +323,21 @@ a:hover {
 }
 
 .insight-card {
-    background: rgba(255, 255, 255, 0.15);
-    backdrop-filter: blur(10px);
+    background: #ffffff;
     padding: var(--spacing-md);
     border-radius: 12px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    border: 2px solid #3498db;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
 .insight-card h3 {
     font-size: 1.5rem;
     margin-bottom: var(--spacing-xs);
+    color: #3498db;
+}
+
+.insight-card p {
+    color: var(--text-dark);
 }
 
 /* ===================================
@@ -331,7 +345,15 @@ a:hover {
    =================================== */
 
 #section3 {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: #f8f9fa; /* Light neutral background */
+}
+
+#section3 .scroll-graphic {
+    background: #2c3e50; /* Consistent with examples */
+}
+
+#section3 .scroll-text {
+    background: #ffffff;
 }
 
 .workflow-diagram {
@@ -344,22 +366,24 @@ a:hover {
 }
 
 .workflow-step {
-    background: var(--accent-blue);
-    color: var(--text-light);
+    background: #3498db;
+    color: #ffffff;
     padding: var(--spacing-md);
     border-radius: 12px;
     text-align: center;
     min-width: 200px;
+    box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
 }
 
 .workflow-step h4 {
     font-size: 1.25rem;
     margin-bottom: var(--spacing-xs);
+    color: #ffffff;
 }
 
 .workflow-arrow {
     font-size: 2rem;
-    color: var(--accent-yellow);
+    color: #3498db;
     font-weight: bold;
 }
 
@@ -410,20 +434,20 @@ a:hover {
 }
 
 .takeaway {
-    background: rgba(255, 255, 255, 0.15);
-    backdrop-filter: blur(10px);
+    background: #ffffff;
     padding: var(--spacing-md);
     border-radius: 12px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    border: 2px solid #27ae60;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
 .takeaway h4 {
     font-size: 1.25rem;
-    color: var(--text-light);
+    color: #27ae60;
 }
 
 .takeaway p {
-    color: rgba(255, 255, 255, 0.9);
+    color: var(--text-dark);
 }
 
 .closing-message {
